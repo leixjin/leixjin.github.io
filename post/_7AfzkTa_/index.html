@@ -1,0 +1,246 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>iOS 中 Push 功能的实现 | leixjin</title>
+<link rel="shortcut icon" href="https://blog.xiaolei.kim/favicon.ico?v=1558853467460">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://blog.xiaolei.kim/styles/main.css">
+
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/moment.js/2.23.0/moment.min.js"></script>
+
+
+
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://blog.xiaolei.kim">
+  <img class="avatar" src="https://blog.xiaolei.kim/images/avatar.png?v=1558853467460" alt="">
+  </a>
+  <h1 class="site-title">
+    leixjin
+  </h1>
+  <p class="site-description">
+    Think different.
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              iOS 中 Push 功能的实现
+            </h2>
+            <div class="post-info">
+              <time class="post-time">
+                · 2015-04-15 ·
+              </time>
+              
+            </div>
+            
+              <div class="post-feature-image" style="background-image: url('https://cdn.pixabay.com/photo/2017/11/19/23/25/forest-2964073_960_720.jpg')">
+              </div>
+            
+            <div class="post-content">
+              <h2 id="push的基本原理">Push的基本原理</h2>
+<p>可以用苹果官方文档中的一张图片简单的概括：</p>
+<p><img src="http://7xii6e.com1.z0.glb.clouddn.com/iOS_Push.png" alt="Push的流程"></p>
+<p><strong>它是基于这样一种工作流程：</strong></p>
+<ul>
+<li>我们的iOS设备，只要处于联网状态，就会和苹果的服务器保持长连接，以便苹果的各种消息服务能够正常工作(比如说<strong>iMassage</strong>、<strong>FaceTime</strong>、以及我们要用到的<strong>APNs</strong>服务等) 。</li>
+<li>当用户装了我们实现Push功能的应用，启动应用时会向苹果注册<strong>DeviceToken</strong> (这个token是消息推送的唯一标识，APNs寻找消息推送的设备就是靠这个标识，但是这个token不可以作为设备的唯一标识使用，因为当用户重装设备系统或者恢复设备的时候<strong>DeviceToken</strong>会发生改变)，我们获得这个<strong>DeviceToken</strong>之后需要发送给我们的服务器(即<strong>Provider</strong>)。</li>
+<li>当有推送需求的时候，<strong>Provider</strong>把消息和<strong>DeviceToken</strong>按照指定的格式发送给<strong>APNs</strong>。</li>
+<li><strong>APNs</strong>收到<strong>Provider</strong>发送的消息，会根据<strong>DeviceToken</strong>查找对应的设备，如果设备在线，则会把消息发送给设备，如果设备不在线，则会等到设备在线的时候把消息推送到设备。<br>
+<em>注：苹果并不保证每条消息都会推送成功。</em></li>
+<li>设备收到消息之后，根据SSL证书判断是哪个程序，然后程序再做相应的处理(比如显示消息文字、声音、消息数量等)。</li>
+</ul>
+<p>流程了解完毕，下面就可以考虑实现了。实现其实很简单，只需要生成所需要的证书，然后简单的设置一下，写几行代码就可以搞定。</p>
+<h2 id="生成各种需要的证书">生成各种需要的证书</h2>
+<p>相信程序做到推送这里的人肯定都会把<strong>CSR文件</strong>、<strong>APP ID</strong> 以及<strong>真机调试文件</strong>之类的安装好了，我们需要做的就只是在开发者中心的<strong>APP ID</strong>配置中选择对应的<strong>APP ID</strong>，然后点击<strong>Configure</strong>，打开<strong>Enable for Apple Push Notification Service</strong>选项，该选项下有<strong>Development</strong>和<strong>Production</strong>两个SSL证书可以配置，显然其分别为开发证书和产品证书。我们测试的话就生成<strong>Development</strong>证书就可以了。根据<strong>CSR文件</strong>，生成相应的<strong>SSL Certificate</strong>，然后保存，假如命名为<strong>aps_development.cer</strong>。然后我们需要单击以下<strong>aps_development</strong>以安装到我们的MAC上。</p>
+<p>然后我们在钥匙串中导出<strong>aps_development.cer</strong>为**.p12**，设置密码，选择保存路径，假设命名为<strong>aps_development_key.p12</strong>(如果你的证书是在别的Mac上生成的，则导出为.p12这个选项可能是灰色的，不能点击，这时你需要在原电脑上导出.p12)。</p>
+<p><strong>下面我们要用生成的证书，生成服务器端所需要的证书。</strong></p>
+<p>此时应该有3个证书：</p>
+<ol>
+<li>CertificateSigningRequest.certSigningRequest</li>
+<li>aps_development.cer</li>
+<li>aps_development_key.p12</li>
+</ol>
+<ul>
+<li>将aps_development.cer转换成pem格式</li>
+</ul>
+<pre><code class="language-objc">openssl x509 -in aps_development.cer -inform DER -out aps_development.pem -outform PEM
+</code></pre>
+<ul>
+<li>将aps_development_key.p12转换成aps_development_key.pem</li>
+</ul>
+<pre><code class="language-objc">openssl pkcs12 -nocerts -out aps_development_key.pem -in aps_development_key.p12
+</code></pre>
+<ul>
+<li>创建用于服务器端的SSL p12证书aps_development_service.p12</li>
+</ul>
+<pre><code class="language-objc">openssl pkcs12 -export -in aps_development.pem -inkey aps_development_key.pem -certfile CertificateSigningRequest.certSigningRequest -name &quot;aps_development_service&quot; -out aps_development_service.p12
+</code></pre>
+<p>这个步骤需要输入3次左右的密码，建议密码和<strong>aps_development_key.p12</strong>的密码一致，以防混淆。</p>
+<p>这里生成的<strong>aps_development_service.p12</strong>就是服务器向APNs服务器发送<strong>Push</strong>消息需要的证书。把证书和密码给服务器端，他们就可以连接<strong>APNs</strong>并发送消息了。</p>
+<p>苹果<strong>APNs</strong>服务器有两个地址，分别为测试的沙盒地址：
+<code>gateway.sandbox.push.apple.com:2195</code><br>
+以及正式地址：<br>
+<code>gateway.push.apple.com:2195</code></p>
+<h2 id="客户端获取devicetoken">客户端获取DeviceToken</h2>
+<ol>
+<li>注册Push服务
+服务器想要给指定设备发送消息，需要知道这个设备的<strong>DeviceToken</strong>，然后上传到服务器。下面就来说明如何获得<strong>DeviceToken</strong>。
+想要能够接收到苹果返回的<strong>DeviceToken</strong>，需要先注册<strong>Push</strong>功能：(iOS8和之前注册方式不同，请注意判断)</li>
+</ol>
+<pre><code class="language-objc">    //推送注册
+    if (iOS8) {
+        [[UIApplication sharedApplication] registerForRemoteNotifications];
+        [[UIApplication sharedApplication] registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeBadge|UIUserNotificationTypeSound|UIUserNotificationTypeAlert categories:nil]];
+    }else{
+        [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeBadge)];
+    }
+</code></pre>
+<ol start="2">
+<li>接收token</li>
+</ol>
+<pre><code class="language-objc">- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
+{
+    //获取token
+    NSString *token = [NSString stringWithFormat:@&quot;%@&quot;,deviceToken];
+    NSLog(@&quot;获取asseccToken%@&quot;,token);
+}
+- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
+{
+    NSLog(@&quot;获取asseccToken失败%@&quot;,error);
+}
+</code></pre>
+<p>拿到了这个<strong>DeviceToken</strong>，就可以上传到服务器了，服务器就可以用这个<strong>DeviceToken</strong>给设备发消息了。</p>
+<h2 id="服务器发送push消息">服务器发送Push消息</h2>
+<p>苹果对于所发的消息也有严格的要求，必须要按照苹果的格式，且内容不能超过256字节，如果超过，<strong>APNs</strong>则不会推送给设备。</p>
+<p>基本格式：</p>
+<pre><code class="language-objc">{
+  &quot;aps&quot; : {
+    &quot;alert&quot; : {
+      &quot;title&quot; : &quot;我是标题&quot;,
+      &quot;body&quot; : &quot;我是内容&quot;
+    },
+    &quot;sound&quot; : &quot;default&quot;,
+    &quot;badge&quot; : 999
+  }
+}
+</code></pre>
+<p>其中<code>aps</code>键值是必须的,<code>badge</code>表示应用图标小红点所显示的数字，为0则不显示。<code>sound</code>表示提示音。</p>
+<p>如果需要添加自定义数据，请加到aps空间之外。</p>
+<pre><code class="language-objc">{
+  &quot;aps&quot; : {
+    &quot;alert&quot; : {
+      &quot;title&quot; : &quot;我是标题&quot;,
+      &quot;body&quot; : &quot;我是内容&quot;
+    },
+    &quot;sound&quot; : &quot;default&quot;,
+    &quot;badge&quot; : 999
+  }
+  &quot;page&quot;:&quot;home&quot;
+}
+</code></pre>
+<p>为了减小消息体积，可以把<code>page</code>写成<code>p</code>，<code>home</code>写成<code>1、2、3</code>之类的，和服务器人员统一好结构。比如<code>&quot;p&quot;:&quot;1&quot;</code>。</p>
+<p>详细结构参考苹果官方文档：<a href="https://developer.apple.com/library/mac/documentation/NetworkingInternet/Conceptual/RemoteNotificationsPG/Chapters/ApplePushService.html">ApplePushService</a></p>
+<h2 id="客户端接收push">客户端接收Push</h2>
+<p>服务器发送消息后，经过<strong>APNs</strong>的处理，就可以到达我们的设备了。我们需要用下面的代码接收消息。</p>
+<pre><code class="language-objc">- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
+{
+    NSLog(@&quot;%@&quot;,userInfo);
+}
+</code></pre>
+<p>如果应用还没启动，则可以在下面的方法中获取消息。</p>
+<pre><code class="language-objc">- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    //推送信息
+    NSDictionary *userInfo = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
+}
+</code></pre>
+<p>如果服务器给badge设置了值的话，应用图标会一直显示数字，可以用下面的函数清空。</p>
+<pre><code class="language-objc">[[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
+</code></pre>
+<p>如果你做完了这些，迫切的想测试结果，但是服务器那边还没开发完成的话，你可以用下面的工具来测试。<br>
+<a href="https://github.com/stefanhafeneger/PushMeBaby">Push测试工具</a></p>
+<p>因为我们公司的服务器是用C#写的，所以附上一个可用的项目地址吧：<br>
+<a href="https://github.com/Redth/APNS-Sharp">C#服务器端代码</a></p>
+<h2 id="小结">小结</h2>
+<p>只要把各种证书和Token设置好，苹果的推送相对来说特别的简单。<br>
+苹果把推送完全控制在自己手里，对开发者和用户来说，都有很大的好处。对于开发者来说，用官方的接口能够很方便的集成推送功能，对用户来说，不会每天都收到乱七八糟的各种推送。这种为用户和开发者考虑的行为，真的很让人舒服。</p>
+
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://blog.xiaolei.kim/post/Lovkl2xsz">
+              <h3 class="post-title">
+                Hexo 遇到的坑
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | 
+  <a class="rss" href="https://blog.xiaolei.kim/atom.xml" target="_blank">RSS</a>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,132 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>指定初始化方法并使系统初始化方法无效 | leixjin</title>
+<link rel="shortcut icon" href="https://blog.xiaolei.kim/favicon.ico?v=1558853467460">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://blog.xiaolei.kim/styles/main.css">
+
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/moment.js/2.23.0/moment.min.js"></script>
+
+
+
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://blog.xiaolei.kim">
+  <img class="avatar" src="https://blog.xiaolei.kim/images/avatar.png?v=1558853467460" alt="">
+  </a>
+  <h1 class="site-title">
+    leixjin
+  </h1>
+  <p class="site-description">
+    Think different.
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              指定初始化方法并使系统初始化方法无效
+            </h2>
+            <div class="post-info">
+              <time class="post-time">
+                · 2015-09-17 ·
+              </time>
+              
+                <a href="https://blog.xiaolei.kim/tag/aNq11Gn7A" class="post-tag">
+                  # iOS
+                </a>
+              
+            </div>
+            
+              <div class="post-feature-image" style="background-image: url('https://cdn.pixabay.com/photo/2017/10/18/16/08/wolf-2864647_960_720.jpg')">
+              </div>
+            
+            <div class="post-content">
+              <p>在iOS开发中，系统的初始化方法经常不能满足我们的需要，这时我们就需要自定义一些初始化方法来满足项目需求。但是当别人使用这些类时，有时并不知道需要使用这些自定义的初始化方法，而继续使用系统的如<code>init</code>之类的方法，会导致这个类不能按照预期的目的进行初始化，从而导致一些错误的出现。但是<code>OC</code>并没有指定初始化方法这个功能，该如何避免此类情况的发生呢？</p>
+<p>虽然<code>OC</code>并没有这一特性，但万能的<code>Xcode</code>可以，我们可以通过编译器声明，来达到这一目的。</p>
+<pre><code class="language-objc">//指定系统初始化方法不可用并附上一些提示
+- (instancetype)init __attribute__((unavailable(&quot;此处可以写一些编辑错误提示&quot;)));
+//指定自定义的初始化方法
+- (instancetype)initWithSomething:(id)something NS_DESIGNATED_INITIALIZER;
+</code></pre>
+<p>利用编译器的特性，可以弥补语言上的缺陷，苹果为开发者考虑的真很周到啊。</p>
+
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://blog.xiaolei.kim/post/piAByn8uv">
+              <h3 class="post-title">
+                与原作者同步 Fork 代码仓库
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | 
+  <a class="rss" href="https://blog.xiaolei.kim/atom.xml" target="_blank">RSS</a>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+
+      </div>
+    </div>
+  </body>
+</html>

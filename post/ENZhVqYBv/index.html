@@ -1,0 +1,192 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>使用 CocoaPods 管理第三方库 | leixjin</title>
+<link rel="shortcut icon" href="https://blog.xiaolei.kim/favicon.ico?v=1558853467460">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://blog.xiaolei.kim/styles/main.css">
+
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/moment.js/2.23.0/moment.min.js"></script>
+
+
+
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://blog.xiaolei.kim">
+  <img class="avatar" src="https://blog.xiaolei.kim/images/avatar.png?v=1558853467460" alt="">
+  </a>
+  <h1 class="site-title">
+    leixjin
+  </h1>
+  <p class="site-description">
+    Think different.
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              使用 CocoaPods 管理第三方库
+            </h2>
+            <div class="post-info">
+              <time class="post-time">
+                · 2015-04-22 ·
+              </time>
+              
+                <a href="https://blog.xiaolei.kim/tag/aNq11Gn7A" class="post-tag">
+                  # iOS
+                </a>
+              
+            </div>
+            
+              <div class="post-feature-image" style="background-image: url('https://cdn.pixabay.com/photo/2018/01/31/07/36/secret-3120483_960_720.jpg')">
+              </div>
+            
+            <div class="post-content">
+              <p>开发应用程序，不可避免的会使用到第三方库，时间久了，需要引用的第三方库就会慢慢多起来，如果每一个库都去手动添加、升级、管理，虽然很简单，但是却没什么技术含量，管理这些库花费的都是不必要的时间。如果能有一款工具可以自动去管理这些第三方库，岂不是更好。最近研究了一下<strong>CocoaPods</strong>，用了之后发现以前自己浪费了好多时间在配置各种第三方库上面。有了<strong>CocoaPods</strong>之后，只需要在<strong>Podfile</strong>文件中写入对应的库，它便会自动把库下载下来并且设置好所需的系统依赖和编译参数，能大大节省不必要的时间，对提升开发效率有很大的帮助。</p>
+<hr>
+<h1 id="什么是cocoapods">什么是CocoaPods</h1>
+<p><strong>CocoaPods</strong>是一个开源的用于iOS程序依赖库管理的工具，它可以解决库与库之间的依赖关系，自动下载库的源代码并且配置好所需的参数，它的<a href="https://github.com/CocoaPods/CocoaPods">源代码</a>在<strong>Github</strong>上进行托管。</p>
+<h1 id="安装cocoapods">安装CocoaPods</h1>
+<p><strong>CocoaPods</strong>是用<strong>Ruby</strong>实现的，安装它首先需要<strong>Ruby</strong>环境。不过我们伟大的<strong>Mac</strong>已经自带<strong>Ruby</strong>了，所以我们接下来的安装异常的简单。</p>
+<p>安装<strong>CocoaPods</strong>只需要在<strong>Terminal</strong>下执行<strong>Ruby</strong>的<strong>gem</strong>命令即可。</p>
+<ul>
+<li><strong>gem</strong>是管理<strong>Ruby</strong>库和程序的标准包，如果你的<strong>gem</strong>太老，安装过程可能不会太顺利，可以先升级下<strong>gem</strong>：</li>
+</ul>
+<pre><code class="language-ruby">sudo gem update --system
+</code></pre>
+<ul>
+<li>如果你身在天朝，那你需要替换<strong>Ruby</strong>的软件源为国内RubyChina源（因为<strong>Ruby</strong>使用的是亚马逊的云服务，被伟大的墙给墙了）：</li>
+</ul>
+<pre><code class="language-ruby">//移除原有的源
+gem sources --remove https://rubygems.org/
+//执行成功之后继续
+gem sources -a https://gems.ruby-china.org/
+//验证是否替换成功
+gem sources -l
+</code></pre>
+<ul>
+<li>安装<strong>CocoaPods</strong>：</li>
+</ul>
+<pre><code class="language-ruby">sudo gem install cocoapods
+pod setup
+</code></pre>
+<p>安装过程根据网速快慢时间不等，因为安装过程需要下载80M左右的索引文件，所以第一次安装会比较慢。</p>
+<h1 id="使用cocoapods">使用CocoaPods</h1>
+<ul>
+<li>用<strong>Terminal</strong>进入项目的根目录，然后执行：</li>
+</ul>
+<pre><code class="language-ruby">pod init
+</code></pre>
+<ul>
+<li>会在根目录创建一个名称为<strong>Podfile</strong>的文件：</li>
+</ul>
+<pre><code class="language-ruby"># Uncomment this line to define a global platform for your project
+# platform :ios, '6.0'
+
+target '项目名称' do
+//将依赖库的名字列在这里
+pod 'AVOSCloud'
+pod 'JSONKit',       '~&gt; 1.4'
+pod 'Reachability',  '~&gt; 3.0.0'
+pod 'ASIHTTPRequest'
+pod 'RegexKitLite'
+end
+
+target '项目名称Tests' do
+
+end
+</code></pre>
+<ul>
+<li>然后执行如下命令即可：</li>
+</ul>
+<pre><code class="language-ruby">pod install
+</code></pre>
+<p>做完这些，会在项目的根目录下生成**.xcworkspace<strong>文件，以后都用这个文件打开工程而不是以前的</strong>.xcodeproj<strong>文件。<br>
+每次更改</strong>Podfile**文件之后，需要执行<code>pod update</code>命令更新依赖库。</p>
+<h1 id="小结">小结</h1>
+<p>使用<strong>CocoaPods</strong>能够有效的提升我们的工作效率，让我们可以腾出更多的时间去优化项目。不要被<strong>CocoaPods</strong>这个名字吓到，其实它使用起来特别简单，我刚开始的时候以为它很难学习，没想到后来用了一点点时间就学会了，极低的学习成本，但是却受益无穷。</p>
+<blockquote>
+<p>参考文章：<br>
+<a href="https://cocoapods.org/">CocoaPods官网</a><br>
+<a href="http://blog.devtang.com/blog/2014/05/25/use-cocoapod-to-manage-ios-lib-dependency/">唐巧的技术博客</a></p>
+</blockquote>
+
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://blog.xiaolei.kim/post/_7AfzkTa_">
+              <h3 class="post-title">
+                iOS 中 Push 功能的实现
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | 
+  <a class="rss" href="https://blog.xiaolei.kim/atom.xml" target="_blank">RSS</a>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+
+      </div>
+    </div>
+  </body>
+</html>

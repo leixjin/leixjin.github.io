@@ -1,0 +1,166 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Mac OS X 升级 Git | leixjin</title>
+<link rel="shortcut icon" href="https://blog.xiaolei.kim/favicon.ico?v=1558853467460">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://blog.xiaolei.kim/styles/main.css">
+
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/moment.js/2.23.0/moment.min.js"></script>
+
+
+
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://blog.xiaolei.kim">
+  <img class="avatar" src="https://blog.xiaolei.kim/images/avatar.png?v=1558853467460" alt="">
+  </a>
+  <h1 class="site-title">
+    leixjin
+  </h1>
+  <p class="site-description">
+    Think different.
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              Mac OS X 升级 Git
+            </h2>
+            <div class="post-info">
+              <time class="post-time">
+                · 2015-12-14 ·
+              </time>
+              
+                <a href="https://blog.xiaolei.kim/tag/OhXZ6-ghv" class="post-tag">
+                  # Mac
+                </a>
+              
+            </div>
+            
+              <div class="post-feature-image" style="background-image: url('https://cdn.pixabay.com/photo/2018/05/12/17/41/forest-3394066_960_720.jpg')">
+              </div>
+            
+            <div class="post-content">
+              <p>作为一个<code>Mac</code>用户，如果安装了<code>Xcode</code>，自然就会有<code>Git</code>，但是这个<code>Git</code>的版本却不是最新的，作为一个强迫症晚期的人，我是不能容忍一个不是最新版本的软件出现在我的电脑上的。于是，我就用<code>Homebrew</code>升级了，但是这个升级，却着实让我蛋疼了一下…</p>
+<p>下面，就是我愉快的升级经历……</p>
+<p>首先</p>
+<pre><code class="language-ruby">brew upgrade git
+</code></pre>
+<p>恩，执行完毕之后，提示我升级成功,此时最新版本是<code>2.6.3</code>。</p>
+<p>然后</p>
+<pre><code class="language-ruby">git --version
+git version 2.3.3
+</code></pre>
+<p>什么鬼？？？明明应该是<code>2.6.3</code>的好么？</p>
+<p>看了一下我的<code>brew</code>目录下的<code>Git</code>目录，发现还有旧版本的缓存</p>
+<pre><code class="language-ruby">ls /usr/local/Cellar/git/
+2.3.3 2.6.3
+</code></pre>
+<p>先把旧版本的干掉再说</p>
+<pre><code class="language-ruby">brew unlink git
+brew cleanup git
+Removing: /usr/local/Cellar/git/2.3.3
+</code></pre>
+<p>然后，给新版本的加个软链接</p>
+<pre><code class="language-ruby">brew link git
+</code></pre>
+<p>恩，现在<code>/usr/local/bin</code>目录下就有最新版的软链接了</p>
+<p>你以为这样就行了？No No No……</p>
+<p>我们最新版的路径是这个</p>
+<pre><code class="language-ruby">/usr/local/bin/git
+</code></pre>
+<p>而<code>bash</code>当前所使用的<code>Git</code>链接到的路径是</p>
+<pre><code class="language-ruby">which git
+/usr/bin/git
+</code></pre>
+<p>那么，很显然我们需要把让<code>bash</code>搜索我们最新版本的<code>Git</code>的路径(为了避免删除原版的<code>Git</code>可能带来的莫名其妙的问题，原版就留着吧).</p>
+<p>只需要在<code>~/.bash_profile</code>里加入以下命令</p>
+<pre><code class="language-ruby">export PATH=/usr/local/bin/git:${PATH}
+</code></pre>
+<p>就可以让<code>bash</code>优先搜索<code>/usr/local/bin/git</code>，也就是我们最新版的<code>Git</code>的软链接的路径了。</p>
+<p>下面，再看看我们<code>Git</code>的版本</p>
+<pre><code class="language-ruby">git --version
+git version 2.6.3
+</code></pre>
+<p>OK，大功告成！</p>
+
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://blog.xiaolei.kim/post/aAAYlHGd0">
+              <h3 class="post-title">
+                利用Runtime自定义导航控制器返回手势
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | 
+  <a class="rss" href="https://blog.xiaolei.kim/atom.xml" target="_blank">RSS</a>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+
+      </div>
+    </div>
+  </body>
+</html>

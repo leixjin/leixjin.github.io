@@ -1,0 +1,322 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>SQLite 和 SQL | leixjin</title>
+<link rel="shortcut icon" href="https://blog.xiaolei.kim/favicon.ico?v=1558853467460">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://blog.xiaolei.kim/styles/main.css">
+
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/moment.js/2.23.0/moment.min.js"></script>
+
+
+
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://blog.xiaolei.kim">
+  <img class="avatar" src="https://blog.xiaolei.kim/images/avatar.png?v=1558853467460" alt="">
+  </a>
+  <h1 class="site-title">
+    leixjin
+  </h1>
+  <p class="site-description">
+    Think different.
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              SQLite 和 SQL
+            </h2>
+            <div class="post-info">
+              <time class="post-time">
+                · 2015-04-03 ·
+              </time>
+              
+                <a href="https://blog.xiaolei.kim/tag/aNq11Gn7A" class="post-tag">
+                  # iOS
+                </a>
+              
+            </div>
+            
+              <div class="post-feature-image" style="background-image: url('https://cdn.pixabay.com/photo/2019/05/24/17/42/landscape-4226798_960_720.jpg')">
+              </div>
+            
+            <div class="post-content">
+              <p>在移动项目开发中*(这里特指<code>iOS</code>开发)*，通常都会接触到各种数据。对于少量、简单的数据，我们可以用归档、偏好设置或者pilst存储。但是如果遇到了大量的、复杂的数据，前面的几种方法就不太适合了。如果偏要用也不是不可以，但是会或多或少的造成性能的问题。对于复杂数据，最好使用数据库来存储。在移动项目开发中通常使用嵌入式数据库，因为这种数据库轻量级、效率高。</p>
+<p><strong>在介绍SQLite之前，先总结一下iOS常用的几种数据存储方式：</strong></p>
+<ol>
+<li>Plist</li>
+<li>Perference</li>
+<li>NSCoding</li>
+<li>SQLite3</li>
+<li>Core Data</li>
+</ol>
+<hr>
+<h1 id="sqlite">SQLite</h1>
+<p><code>SQLite</code>是一款轻量级的嵌入式数据库，<code>Android</code>和<code>iOS</code>开发使用的基本都是<code>SQLite</code>数据库。它占用的资源少*(通常只需要几百K的内存)<em>，处理速度快</em>(比<code>MySQL</code>、<code>PostgreSQL</code>这两款著名的数据库都还快)*。<code>SQLite3</code>是SQLite的第三个版本，也是目前使用的比较多的一个版本。</p>
+<p><strong>我们该如何使用呢？</strong>
+可以下载一个<code>Navcat Premium</code>，软件图标很精致，是我喜欢的风格。这个软件是收费的，不过在中国嘛…你们都懂的。个人提倡使用正版软件，毕竟都是开发者，互相尊重劳动成果嘛。</p>
+<p>软件安装完成之后，新建一个SQLite连接，填写连接名称，选择类型(<code>新建SQLite3</code>)，填写数据库文件的名称以及存放路径，最后点击确定，一个数据库连接就搞好了。然后就可以进行数据库相关的操作了。</p>
+<h1 id="sql">SQL</h1>
+<p><em>SQL(Structured Query Language)结构化查询语言。SQL是一种对关系型数据库中的数据进行定义和操作的语言，它语法简单、好学好用。</em></p>
+<p>使用SQL语言所编写的代码串就是SQL语句，在程序运行过程中，想要实现数据的增删改查，必须使用SQL语句。SQL语句不区分大小写，<em>(在<code>Navcat Premium</code>中关键字会有智能提示，很方便)</em>，每条语句必须都要以分号<code>;</code>结尾。</p>
+<h2 id="sql语句的种类">SQL语句的种类</h2>
+<ol>
+<li>
+<p><strong>DDL:Data Definition Language(数据定义语句)</strong></p>
+<ul>
+<li>包括CREAT和DROP等操作。</li>
+</ul>
+</li>
+<li>
+<p><strong>DML:Data Definition Language(数据操作语句)</strong></p>
+<ul>
+<li>包括INSERT、UPDATE、DELETE等操作。</li>
+</ul>
+</li>
+<li>
+<p><strong>DQL:Data Definition Language(数据查询语句)</strong></p>
+<ul>
+<li>包括SELECT操作</li>
+<li>WHERE、ORDER BY、GROUP BY和HAVING等条件。</li>
+</ul>
+</li>
+</ol>
+<h2 id="基本操作">基本操作</h2>
+<p>在介绍基本操作之前，我们先了解一下SQLite中的几种字段。</p>
+<p><strong>SQLite字段：</strong></p>
+<ul>
+<li>INTEGER 整型</li>
+<li>REAL    浮点型</li>
+<li>TEXT    字符串</li>
+<li>BLOB    二进制数据</li>
+</ul>
+<blockquote>
+<p>实际上SQLite是无类型的，即使声明了字段类型，也可以存储其他类型的数据。
+为了保持良好的编程规范、方便开发人员之间的交流，建表的时候最好给每个加上字段类型。</p>
+</blockquote>
+<hr>
+<ol>
+<li>
+<p><strong>建表</strong></p>
+<ul>
+<li>CREATE TABLE 表名(字段1 类型 其他条件*(E.g.主键约束、非空约束等)*,字段2 类型 …,…);</li>
+<li>CREATE TABLE IF NOT EXISTS 表名(……);</li>
+</ul>
+</li>
+<li>
+<p><strong>删表</strong></p>
+<ul>
+<li>DROP TABLE 表名;</li>
+<li>DROP TABLE IF EXISTS 表名;</li>
+</ul>
+</li>
+<li>
+<p><strong>插入数据</strong></p>
+<ul>
+<li>INSERT INTO 表名(字段1,字段2,…) VALUES(值1,值2,…);</li>
+</ul>
+<blockquote>
+<p>如果值是字符串，要用单引号''括住。</p>
+</blockquote>
+</li>
+<li>
+<p><strong>更新数据</strong></p>
+<ul>
+<li>UPDATE 表名 SET 字段1 = 值, 字段2 = 值, … ;</li>
+</ul>
+</li>
+<li>
+<p><strong>删除数据</strong></p>
+<ul>
+<li>DELETE FROM 表名;</li>
+</ul>
+</li>
+<li>
+<p><strong>条件语句</strong></p>
+<ul>
+<li>WHERE 字段 = 某值;</li>
+<li>WHERE 字段 IS 某值;</li>
+<li>WHERE 字段 != 某值;</li>
+<li>WHERE 字段 IS NOT 某值;</li>
+<li>WHERE 字段1 &gt; 某值 AND 字段2 &gt; 某值;</li>
+<li>WHERE 字段1 = 某值 OR 字段2 = 某值;</li>
+</ul>
+<blockquote>
+<p>E.g. DELETE FROM 表名称 WHERE 字段名 = 某值 AND 字段名 = 某值;</p>
+</blockquote>
+</li>
+<li>
+<p><strong>查询语句</strong></p>
+<ul>
+<li>SELECT * FROM 表名;//查询所有字段</li>
+<li>SELECT 字段1,字段2 FROM 表名;//查询指定字段</li>
+</ul>
+</li>
+<li>
+<p><strong>别名</strong></p>
+<ul>
+<li>SELECT 字段1 别名1,字段2 别名2 FROM 表名 别名;</li>
+<li>SELECT 字段1 AS 别名1,字段2 AS 别名2 FROM 表名 AS 别名;</li>
+<li>SELECT 别名.字段1,别名.字段2 FROM 表名 别名;//可以用点语法访问指定表中的字段</li>
+</ul>
+</li>
+<li>
+<p><strong>计算记录数量</strong></p>
+<ul>
+<li>SELECT COUNT(字段) FROM 表名;</li>
+<li>SELECT COUNT(*) FROM 表名;</li>
+</ul>
+</li>
+<li>
+<p><strong>排序</strong></p>
+<ul>
+<li>SELECT * FROM 表名 ORDER BY 字段;</li>
+<li>SELECT * FROM 表名 ORDER BY 字段 ASC;//升序，默认;</li>
+<li>SELECT * FROM 表名 ORDER BY 字段 DESC;//降序</li>
+<li>SELECT * FROM 表名 ORDER BY 字段 ASC, 字段2 DESC;//先按字段1排序，字段1相等再按字段2排序</li>
+</ul>
+</li>
+<li>
+<p><strong>LIMIT</strong></p>
+<ul>
+<li>SELECT * FROM 表名 LIMIT 数值1,数值2;</li>
+</ul>
+</li>
+</ol>
+<h2 id="约束">约束</h2>
+<ol>
+<li>
+<p><strong>简单约束</strong></p>
+<p>建表时可以给特定的字段设置一些约束条件，以满足需求，常见的约束有：</p>
+<ul>
+<li>NOT NULL</li>
+<li>UNIQUE</li>
+<li>DEFAULT</li>
+<li>AUTOINCREMENT</li>
+</ul>
+</li>
+<li>
+<p><strong>主键约束</strong></p>
+<ul>
+<li>
+<p>为了保证每一条记录的唯一性，便于管理，增加了主键约束。用主键来标识记录的唯一性。</p>
+</li>
+<li>
+<p>用PRIMARY KEY来标识主键，主键可以是一个或者多个字段。</p>
+</li>
+<li>
+<p>主键默认包含了NOT NULL和UNIQUE两个约束。</p>
+</li>
+<li>
+<p>如果想让主键自动增长，主键的字段类型必须是INTEGER类型，且应增加AUTOINCREMENT约束。</p>
+</li>
+</ul>
+<blockquote>
+<p>CREATE TABLE 表名(字段 INTEGER PRIMARY KEY AUTOINCREMENT,字段2 …);</p>
+</blockquote>
+</li>
+<li>
+<p><strong>外键约束</strong></p>
+<ul>
+<li>如果有两张或者多张表，且表与表之间有联系，就要用到外键约束。</li>
+<li>外键约束的一般情况是：一张表的某个字段，引用着另一张表的主键字段。</li>
+</ul>
+<blockquote>
+<p>CREAT TABLE 表名(字段1 INTEGER PRIMARY KEY AUTOINCREMENT,字段2 ,CONSTRAINT 外键名称 FOREIGN KEY (字段2) REFERENCE 另一张表(主键字段));</p>
+</blockquote>
+</li>
+<li>
+<p><strong>表连接查询</strong></p>
+<p>所谓表连接查询，就是需要联合多张表才能查到想要的所有数据的查询。</p>
+<ul>
+<li>内连接：INNER JOIN 或 JOIN</li>
+<li>左外连接： LEFT OUTER JOIN</li>
+</ul>
+<blockquote>
+<p>E.g. SELECT 别名1.字段1 ,别名1.字段2 FROM 表1 别名1,表2 别名2 WHERE 别名1.字段 = 别名2.主键 AND 别名.字段 = 'xxx';</p>
+</blockquote>
+</li>
+</ol>
+<h1 id="小结">小结</h1>
+<p>以上就是我在学习SQLite过程中总结以及汇总的一些经验，这些只是冰山一角。数据库是一个很复杂很神奇的技术，有待我们去深入发掘。</p>
+
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://blog.xiaolei.kim/post/Closures">
+              <h3 class="post-title">
+                Swift 中的闭包（Closures）
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | 
+  <a class="rss" href="https://blog.xiaolei.kim/atom.xml" target="_blank">RSS</a>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+
+      </div>
+    </div>
+  </body>
+</html>

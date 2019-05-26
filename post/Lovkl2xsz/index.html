@@ -1,0 +1,133 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Hexo 遇到的坑 | leixjin</title>
+<link rel="shortcut icon" href="https://blog.xiaolei.kim/favicon.ico?v=1558853467460">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://blog.xiaolei.kim/styles/main.css">
+
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/moment.js/2.23.0/moment.min.js"></script>
+
+
+
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://blog.xiaolei.kim">
+  <img class="avatar" src="https://blog.xiaolei.kim/images/avatar.png?v=1558853467460" alt="">
+  </a>
+  <h1 class="site-title">
+    leixjin
+  </h1>
+  <p class="site-description">
+    Think different.
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              Hexo 遇到的坑
+            </h2>
+            <div class="post-info">
+              <time class="post-time">
+                · 2015-04-12 ·
+              </time>
+              
+                <a href="https://blog.xiaolei.kim/tag/aNq11Gn7A" class="post-tag">
+                  # iOS
+                </a>
+              
+            </div>
+            
+              <div class="post-feature-image" style="background-image: url('https://cdn.pixabay.com/photo/2016/02/24/18/37/fog-1220491_960_720.jpg')">
+              </div>
+            
+            <div class="post-content">
+              <h3 id="问题">问题</h3>
+<p>前两天写上篇博文*（<a href="http://xiaolei0808.com/2015/04/08/%E8%A7%A3%E5%86%B3DrawInRect%E7%BB%98%E5%9B%BE%E4%B8%8D%E6%B8%85%E6%99%B0%E7%9A%84%E9%97%AE%E9%A2%98/">解决DrawInRect绘图不清晰的问题</a>）<em>的时候其实我是写了一大堆的，但是HEXO生成的时候却卡在那里了，找了半天，发现把原来的这篇删了之后生成的飞快</em>(不到1s就可以了)<em>。所以我怀疑是博文内容的问题，找来找去，发现如果把代码注释掉，那速度也是飞快的。但是虽然当时知道是代码有问题，但是却找不到为什么写几行代码就会生成的死慢，无奈就把博文精简再精简，最后只剩下2行代码了</em>(所以其实不是我懒，是因为遇到了坑)*，就这还是花了9s多才生成好，无奈之下就先把文章传上去了。</p>
+<p>然后今天有点闲，专门花了时间解决这个问题，终于发现了问题所在。</p>
+<h3 id="before">Before</h3>
+<p>以前我在文章中插入代码块是直接用**```*<em>来包裹代码块，没有标注所使用的语言，我认为这样生成的比较慢是因为Hexo遇到了它不认识的语言，需要费力气去它的语言库里面找</em>(使劲找啊找，结果累死了)*。</p>
+<h3 id="after">After</h3>
+<p>后来我在**```<strong>的后面加上了所使用的语言，比如</strong>```objc**之后再生成，又回到了不到1s的速度，问题就解决了。所以以后在插入代码块的时候，记得加语言标记。</p>
+<h3 id="other">Other</h3>
+<p>对了，最近发现**<a href="http://25.io/mou/">Mou</a><strong>保存的时候总是有几秒的卡顿，果断不能忍，现在使用的Markdown编辑器是</strong><a href="http://macdown.uranusjr.com/">MacDown</a>**，支持代码高亮，行号显示等功能，感觉比Mou好用。</p>
+
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://blog.xiaolei.kim/post/KFGI25vTF">
+              <h3 class="post-title">
+                解决 DrawInRect 绘图不清晰的问题
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | 
+  <a class="rss" href="https://blog.xiaolei.kim/atom.xml" target="_blank">RSS</a>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+
+      </div>
+    </div>
+  </body>
+</html>

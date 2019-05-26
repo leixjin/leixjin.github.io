@@ -1,0 +1,156 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>iOS10.0~10.2 越狱之后通过 WIFI 进行 SSH 连接 | leixjin</title>
+<link rel="shortcut icon" href="https://blog.xiaolei.kim/favicon.ico?v=1558853467460">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://blog.xiaolei.kim/styles/main.css">
+
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/moment.js/2.23.0/moment.min.js"></script>
+
+
+
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://blog.xiaolei.kim">
+  <img class="avatar" src="https://blog.xiaolei.kim/images/avatar.png?v=1558853467460" alt="">
+  </a>
+  <h1 class="site-title">
+    leixjin
+  </h1>
+  <p class="site-description">
+    Think different.
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              iOS10.0~10.2 越狱之后通过 WIFI 进行 SSH 连接
+            </h2>
+            <div class="post-info">
+              <time class="post-time">
+                · 2017-03-16 ·
+              </time>
+              
+                <a href="https://blog.xiaolei.kim/tag/aNq11Gn7A" class="post-tag">
+                  # iOS
+                </a>
+              
+            </div>
+            
+              <div class="post-feature-image" style="background-image: url('https://cdn.pixabay.com/photo/2016/07/28/08/50/sunbeam-1547273_960_720.jpg')">
+              </div>
+            
+            <div class="post-content">
+              <p>最近搞了一下 iOS 10 的越狱，然后在 SSH 连接的时候遇到了一个小坑。在 iOS 10 之前，越狱之后需要手动安装 OpenSSH，以此达到通过 SSH 连接 iPhone 的目的。但是此次的越狱，作者竟然内置了 OpenSSH，所以就不需要再另外安装。但是小哥默认禁用了 SSH 连接，需要我们手动进行开启。</p>
+<p>下面，说一下具体操作步骤。</p>
+<h2 id="步骤">步骤：</h2>
+<p>1.越狱(废话=。=国内可以用 PP 助手傻瓜式越狱，此次越狱为不完美越狱，每次重启都要重新越狱，有点蛋疼)。</p>
+<p>2.在 Cydia 中搜索 Filza 并安装，也可以在电脑端安装 iFunBox 工具。此步骤的主要目的是为了修改越狱工具中的一个文件。</p>
+<p>3.用上述两个工具其中之一，进入以下路径：<strong>/private/var/containers/Bundle/Application/yalu102/yalu102.app/</strong></p>
+<p>4.用文本编辑器打开 <strong>dropbear.plist</strong> 文件。</p>
+<p>5.替换 <strong>127.0.0.1:22</strong> 为 <strong>22</strong>。</p>
+<p>6.重启设备，重新使用越狱工具恢复越狱。</p>
+<blockquote>
+<p><strong>注：越狱之后一定不要再装 OpenSSH 了，已经安装过的可以卸载掉。不然无法通过 WIFI 进行 SSH 连接。</strong></p>
+</blockquote>
+<p>经过以上步骤，就可以愉快的使用终端通过 WIFI 连接你的 iPhone 了。</p>
+<p>连接方法：<strong>ssh root@&lt;#iPhone IP Address#&gt;</strong>
+默认密码：<strong>alpine</strong></p>
+<blockquote>
+<p>强烈建议连接之后的第一件事就是修改密码，防止不法分子通过 WiFi 窃取你的个人信息。</p>
+</blockquote>
+<h2 id="修改密码">修改密码</h2>
+<p><em>依次在终端输入：</em>
+<strong>su root</strong>
+<em>然后按提示输入当前密码</em>
+<strong>passwd</strong>
+<em>输入新密码</em>
+<em>确认新密码</em>
+<em>密码修改完成</em></p>
+<p>Well Done, Enjoy!</p>
+<blockquote>
+<p>参考：
+<a href="https://yalujailbreak.net/ssh-ios-10-tutorial/">Blog</a>
+<a href="https://www.youtube.com/watch?v=TJKcHWrmzlo">YouTubeAddress</a></p>
+</blockquote>
+
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://blog.xiaolei.kim/post/Y7fPwVn-X">
+              <h3 class="post-title">
+                Mac 常用工具类软件整理
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | 
+  <a class="rss" href="https://blog.xiaolei.kim/atom.xml" target="_blank">RSS</a>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+
+      </div>
+    </div>
+  </body>
+</html>

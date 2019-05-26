@@ -1,0 +1,158 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>为基于 Docker 搭建的 Ghost 配置邮件服务 | leixjin</title>
+<link rel="shortcut icon" href="https://blog.xiaolei.kim/favicon.ico?v=1558853467460">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://blog.xiaolei.kim/styles/main.css">
+
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/moment.js/2.23.0/moment.min.js"></script>
+
+
+
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://blog.xiaolei.kim">
+  <img class="avatar" src="https://blog.xiaolei.kim/images/avatar.png?v=1558853467460" alt="">
+  </a>
+  <h1 class="site-title">
+    leixjin
+  </h1>
+  <p class="site-description">
+    Think different.
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              为基于 Docker 搭建的 Ghost 配置邮件服务
+            </h2>
+            <div class="post-info">
+              <time class="post-time">
+                · 2018-07-25 ·
+              </time>
+              
+                <a href="https://blog.xiaolei.kim/tag/OV1lmj4PZ" class="post-tag">
+                  # 技术
+                </a>
+              
+            </div>
+            
+              <div class="post-feature-image" style="background-image: url('https://cdn.pixabay.com/photo/2016/04/20/19/47/wolf-1341881_960_720.jpg')">
+              </div>
+            
+            <div class="post-content">
+              <p><img src="https://images.unsplash.com/photo-1532423622396-10a3f979251a?ixlib=rb-0.3.5&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=1080&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjExNzczfQ&amp;s=5d5a21ffdb1e8aa1313909b1ec1b58f6" alt="">
+<small>Photo by <a href="https://unsplash.com/@eberhardgross?utm_source=ghost&amp;utm_medium=referral&amp;utm_campaign=api-credit">eberhard grossgasteiger</a> / <a href="https://unsplash.com/?utm_source=ghost&amp;utm_medium=referral&amp;utm_campaign=api-credit">Unsplash</a></small></p>
+<p>最近想配置一个 Ghost 的多账户，在点完邀请链接之后没有任何效果。遂猜想是不是因为需要配置发件服务器的原因，查了一下果然是需要单独配置才能发送邀请邮件。于是便开始折腾。</p>
+<p>首先，我的 Ghost 是基于 Docker 搭建的，而且是用 HyperApp 搭建的，所以可指定的自定义配置就比较少。我们需要先获取到 Ghost 的配置文件。</p>
+<p>它存在于 Docker 容器内，我们需要先拷贝出来</p>
+<p>拷贝 Docker 容器内的文件可以用这样的命令：</p>
+<pre><code class="language-shell">docker cp CONTAINER:FILEPATH LOCALFILEPATH
+</code></pre>
+<p>对于我的 Ghost，我执行的是：</p>
+<pre><code class="language-shell">docker cp ghost-0210ed:/var/lib/ghost/config.production.json config.json
+</code></pre>
+<p>然后用 vim 对 config.json 进行编辑(以 QQ 邮箱的配置为例)：</p>
+<pre><code class="language-json">&quot;mail&quot;: {  
+    &quot;transport&quot;:&quot;SMTP&quot;,
+    &quot;from&quot;:&quot;name&lt;mail address&gt;&quot;,
+    &quot;options&quot;: {
+        &quot;host&quot;: &quot;smtp.qq.com&quot;,
+        &quot;secureConnection&quot;: true,
+        &quot;port&quot;: 465,
+        &quot;auth&quot;: {
+            &quot;user&quot;: &quot;your mail address&quot;,
+            &quot;pass&quot;:&quot;******&quot; //QQ 邮箱的动态密码
+        }
+    }
+  },
+</code></pre>
+<p>然后把修改完成的配置文件再放回 Docker 容器中</p>
+<pre><code class="language-shell">docker cp LOCALFILEPATH CONTAINER:FILEPATH
+</code></pre>
+<p>对于我的 Ghost，执行的是：</p>
+<pre><code class="language-shell">cp ghost-0210ed:config.json /var/lib/ghost/config.production.json
+</code></pre>
+<p>替换完配置文件，重新启动 Ghost，即可成功发送邀请邮件。</p>
+<p><img src="/images/ghost-team.png" alt="ghost-team"></p>
+
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://blog.xiaolei.kim/post/Z7K5MaNXJ">
+              <h3 class="post-title">
+                iOS Hook 全局方法先导篇之 - Fishhook 原理解析
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | 
+  <a class="rss" href="https://blog.xiaolei.kim/atom.xml" target="_blank">RSS</a>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+
+      </div>
+    </div>
+  </body>
+</html>

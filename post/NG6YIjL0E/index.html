@@ -1,0 +1,164 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>系统地图 API 位置提示搜索 | leixjin</title>
+<link rel="shortcut icon" href="https://blog.xiaolei.kim/favicon.ico?v=1558853467460">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://blog.xiaolei.kim/styles/main.css">
+
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/moment.js/2.23.0/moment.min.js"></script>
+
+
+
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://blog.xiaolei.kim">
+  <img class="avatar" src="https://blog.xiaolei.kim/images/avatar.png?v=1558853467460" alt="">
+  </a>
+  <h1 class="site-title">
+    leixjin
+  </h1>
+  <p class="site-description">
+    Think different.
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              系统地图 API 位置提示搜索
+            </h2>
+            <div class="post-info">
+              <time class="post-time">
+                · 2015-07-24 ·
+              </time>
+              
+                <a href="https://blog.xiaolei.kim/tag/aNq11Gn7A" class="post-tag">
+                  # iOS
+                </a>
+              
+            </div>
+            
+              <div class="post-feature-image" style="background-image: url('https://cdn.pixabay.com/photo/2016/02/18/22/33/forest-1208296_960_720.jpg')">
+              </div>
+            
+            <div class="post-content">
+              <p>最近需要做一个带有位置搜索功能的界面，具体需求就是输入一个位置，能够自动联想出一串与之匹配的地名，供用户选择。在实际应用中，有许多APP都具有此类功能，比如微信朋友圈或者QQ空间的状态的位置，可以自动定位或手动输入，手动输入的时候会根据输入文字的变化，展示一个位置列表。</p>
+<p>想实现这个功能，且不导入第三方的SDK（如果导入第三方地图SDK，会使应用安装包增加10M左右），使用iOS系统自带的高德地图API就能够轻松办到。</p>
+<p>首先，导入<code>MapKit</code>框架</p>
+<pre><code class="language-objc">#import &lt;MapKit/MapKit.h&gt;
+</code></pre>
+<p>如果用不到<code>MapKit</code>框架中其他的API的话，可以单独导入以下框架</p>
+<pre><code class="language-objc">#import &lt;MapKit/MKLocalSearch.h&gt;
+#import &lt;MapKit/MKLocalSearchRequest.h&gt;
+#import &lt;MapKit/MKLocalSearchResponse.h&gt;
+</code></pre>
+<p>然后在输入文字变化所调用的方法里，实现下列关键方法</p>
+<pre><code class="language-objc">	//创建搜索请求对象
+    MKLocalSearchRequest *request = [[MKLocalSearchRequest alloc]init];
+    //把文字赋值给这个自然语言查询的属性，我为了方便演示，在这里写死了一个值
+    request.naturalLanguageQuery = @&quot;财富广场&quot;;
+    //创建搜索对象
+    MKLocalSearch *localSearch = [[MKLocalSearch alloc]initWithRequest:request];
+    __weak __typeof (&amp;*self) weakSelf = self;
+    //开始搜索的回调方法
+    [localSearch startWithCompletionHandler:^(MKLocalSearchResponse *response, NSError *error) {
+        if (error) {
+            //do something
+        }else{
+            //遍历结果数组
+            [response.mapItems enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                //位置对象，包含地理位置的名称、地址、经纬度等详细信息，根据需要获取具体值
+                MKMapItem *mapItem = obj;
+                //以下为我实现列表展示功能所写的代码
+                JXLMapResultModel *model = [JXLMapResultModel new];
+                model.name = mapItem.name;
+                [weakSelf.modelArray addObject:model];
+                if (response.mapItems.count == idx + 1) {
+                    [weakSelf.tableView reloadData];
+                }
+            }];
+        }
+    }];
+</code></pre>
+<p>最终可以实现这样的效果</p>
+<p><img src="http://7xii6e.com1.z0.glb.clouddn.com/%E4%BD%8D%E7%BD%AE%E6%8F%90%E7%A4%BA%E6%90%9C%E7%B4%A2.png" alt=""></p>
+
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://blog.xiaolei.kim/post/ln992yYOM">
+              <h3 class="post-title">
+                纯代码创建 UIDisplaySearchController 遇到的问题
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | 
+  <a class="rss" href="https://blog.xiaolei.kim/atom.xml" target="_blank">RSS</a>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+
+      </div>
+    </div>
+  </body>
+</html>

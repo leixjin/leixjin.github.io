@@ -1,9 +1,9 @@
 <html>
   <head>
-  <meta charset="utf-8" />
+    <meta charset="utf-8" />
 <meta name="description" content="" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>leixjin</title>
+<title>清除 Mac DNS 缓存 | leixjin</title>
 <link rel="shortcut icon" href="https://blog.xiaolei.kim/favicon.ico?v=1558853467460">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
@@ -71,17 +71,47 @@
 </div>
 
 
-        <div class="tags-container">
-          
-            <a class="tag" href="https://blog.xiaolei.kim/tag/OhXZ6-ghv">Mac</a>
-          
-            <a class="tag" href="https://blog.xiaolei.kim/tag/OV1lmj4PZ">技术</a>
-          
-            <a class="tag" href="https://blog.xiaolei.kim/tag/aNq11Gn7A">iOS</a>
-          
-            <a class="tag" href="https://blog.xiaolei.kim/tag/hVGlDuqBs">生活</a>
-          
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              清除 Mac DNS 缓存
+            </h2>
+            <div class="post-info">
+              <time class="post-time">
+                · 2019-01-13 ·
+              </time>
+              
+                <a href="https://blog.xiaolei.kim/tag/OhXZ6-ghv" class="post-tag">
+                  # Mac
+                </a>
+              
+            </div>
+            
+              <div class="post-feature-image" style="background-image: url('https://cdn.pixabay.com/photo/2015/09/09/16/05/forest-931706_960_720.jpg')">
+              </div>
+            
+            <div class="post-content">
+              <pre><code class="language-shell">sudo killall -HUP mDNSResponder
+sudo killall mDNSResponderHelper
+sudo dscacheutil -flushcache
+</code></pre>
+
+            </div>
+          </article>
         </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://blog.xiaolei.kim/post/WOmXokNwB">
+              <h3 class="post-title">
+                为基于 Docker 搭建的 Ghost 配置邮件服务
+              </h3>
+            </a>
+          </div>
+        
+
+        
 
         <div class="site-footer">
   Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | 

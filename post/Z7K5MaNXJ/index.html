@@ -1,76 +1,97 @@
-<?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom">
-    <id>https://blog.xiaolei.kim</id>
-    <title>leixjin</title>
-    <updated>2019-05-26T06:51:57.941Z</updated>
-    <generator>https://github.com/jpmonette/feed</generator>
-    <link rel="alternate" href="https://blog.xiaolei.kim"/>
-    <link rel="self" href="https://blog.xiaolei.kim/atom.xml"/>
-    <subtitle>Think different.</subtitle>
-    <logo>https://blog.xiaolei.kim/images/avatar.png</logo>
-    <icon>https://blog.xiaolei.kim/favicon.ico</icon>
-    <rights>All rights reserved 2019, leixjin</rights>
-    <entry>
-        <title type="html"><![CDATA[清除 Mac DNS 缓存]]></title>
-        <id>https://blog.xiaolei.kim/post/pmyP_Znk7</id>
-        <link href="https://blog.xiaolei.kim/post/pmyP_Znk7">
-        </link>
-        <updated>2019-01-13T06:39:55.000Z</updated>
-        <content type="html"><![CDATA[<pre><code class="language-shell">sudo killall -HUP mDNSResponder
-sudo killall mDNSResponderHelper
-sudo dscacheutil -flushcache
-</code></pre>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[为基于 Docker 搭建的 Ghost 配置邮件服务]]></title>
-        <id>https://blog.xiaolei.kim/post/WOmXokNwB</id>
-        <link href="https://blog.xiaolei.kim/post/WOmXokNwB">
-        </link>
-        <updated>2018-07-25T06:39:27.000Z</updated>
-        <content type="html"><![CDATA[<p><img src="https://images.unsplash.com/photo-1532423622396-10a3f979251a?ixlib=rb-0.3.5&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=1080&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjExNzczfQ&amp;s=5d5a21ffdb1e8aa1313909b1ec1b58f6" alt="">
-<small>Photo by <a href="https://unsplash.com/@eberhardgross?utm_source=ghost&amp;utm_medium=referral&amp;utm_campaign=api-credit">eberhard grossgasteiger</a> / <a href="https://unsplash.com/?utm_source=ghost&amp;utm_medium=referral&amp;utm_campaign=api-credit">Unsplash</a></small></p>
-<p>最近想配置一个 Ghost 的多账户，在点完邀请链接之后没有任何效果。遂猜想是不是因为需要配置发件服务器的原因，查了一下果然是需要单独配置才能发送邀请邮件。于是便开始折腾。</p>
-<p>首先，我的 Ghost 是基于 Docker 搭建的，而且是用 HyperApp 搭建的，所以可指定的自定义配置就比较少。我们需要先获取到 Ghost 的配置文件。</p>
-<p>它存在于 Docker 容器内，我们需要先拷贝出来</p>
-<p>拷贝 Docker 容器内的文件可以用这样的命令：</p>
-<pre><code class="language-shell">docker cp CONTAINER:FILEPATH LOCALFILEPATH
-</code></pre>
-<p>对于我的 Ghost，我执行的是：</p>
-<pre><code class="language-shell">docker cp ghost-0210ed:/var/lib/ghost/config.production.json config.json
-</code></pre>
-<p>然后用 vim 对 config.json 进行编辑(以 QQ 邮箱的配置为例)：</p>
-<pre><code class="language-json">&quot;mail&quot;: {  
-    &quot;transport&quot;:&quot;SMTP&quot;,
-    &quot;from&quot;:&quot;name&lt;mail address&gt;&quot;,
-    &quot;options&quot;: {
-        &quot;host&quot;: &quot;smtp.qq.com&quot;,
-        &quot;secureConnection&quot;: true,
-        &quot;port&quot;: 465,
-        &quot;auth&quot;: {
-            &quot;user&quot;: &quot;your mail address&quot;,
-            &quot;pass&quot;:&quot;******&quot; //QQ 邮箱的动态密码
-        }
-    }
-  },
-</code></pre>
-<p>然后把修改完成的配置文件再放回 Docker 容器中</p>
-<pre><code class="language-shell">docker cp LOCALFILEPATH CONTAINER:FILEPATH
-</code></pre>
-<p>对于我的 Ghost，执行的是：</p>
-<pre><code class="language-shell">cp ghost-0210ed:config.json /var/lib/ghost/config.production.json
-</code></pre>
-<p>替换完配置文件，重新启动 Ghost，即可成功发送邀请邮件。</p>
-<p><img src="/images/ghost-team.png" alt="ghost-team"></p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[iOS Hook 全局方法先导篇之 - Fishhook 原理解析]]></title>
-        <id>https://blog.xiaolei.kim/post/Z7K5MaNXJ</id>
-        <link href="https://blog.xiaolei.kim/post/Z7K5MaNXJ">
-        </link>
-        <updated>2018-07-20T06:38:58.000Z</updated>
-        <content type="html"><![CDATA[<h2 id="什么是-fishhook">什么是 Fishhook</h2>
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>iOS Hook 全局方法先导篇之 - Fishhook 原理解析 | leixjin</title>
+<link rel="shortcut icon" href="https://blog.xiaolei.kim/favicon.ico?v=1558853467460">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://blog.xiaolei.kim/styles/main.css">
+
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/moment.js/2.23.0/moment.min.js"></script>
+
+
+
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://blog.xiaolei.kim">
+  <img class="avatar" src="https://blog.xiaolei.kim/images/avatar.png?v=1558853467460" alt="">
+  </a>
+  <h1 class="site-title">
+    leixjin
+  </h1>
+  <p class="site-description">
+    Think different.
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              iOS Hook 全局方法先导篇之 - Fishhook 原理解析
+            </h2>
+            <div class="post-info">
+              <time class="post-time">
+                · 2018-07-20 ·
+              </time>
+              
+                <a href="https://blog.xiaolei.kim/tag/aNq11Gn7A" class="post-tag">
+                  # iOS
+                </a>
+              
+            </div>
+            
+              <div class="post-feature-image" style="background-image: url('https://cdn.pixabay.com/photo/2016/08/25/19/10/mill-1620440_960_720.jpg')">
+              </div>
+            
+            <div class="post-content">
+              <h2 id="什么是-fishhook">什么是 Fishhook</h2>
 <p>Fishhook 是 facebook 提供的一个动态修改链接 Mach-O 符号表的开源工具。通过 fishhook 我们可以很轻松的 Hook C 语言中的函数，从而达到修改函数功能的目的。</p>
 <p>在了解 Fishhook 的原理之前，我们需要了解一些背景知识。</p>
 <h2 id="mach-o-mach-object-file-format">Mach-O （Mach Object File Format）</h2>
@@ -374,146 +395,34 @@ struct nlist_64 {
 <li><a href="http://www.imlifengfeng.com/blog/?p=692">iOS逆向工程之fishhook</a></li>
 <li><a href="https://dishibolei.github.io/2017/11/13/fishHooker/">fishhook源代码解析</a></li>
 </ul>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Docker 搭建 FTP 服务器]]></title>
-        <id>https://blog.xiaolei.kim/post/PXIlyVOKm</id>
-        <link href="https://blog.xiaolei.kim/post/PXIlyVOKm">
-        </link>
-        <updated>2018-04-26T06:37:57.000Z</updated>
-        <content type="html"><![CDATA[<p><img src="https://images.unsplash.com/photo-1524507390346-633e7cabc14b?ixlib=rb-0.3.5&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=1080&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjExNzczfQ&amp;s=1f55f3e32fce4af14eed0cc1799d5b96" alt="">
-<small>Photo by <a href="https://unsplash.com/@pramstutz?utm_source=ghost&amp;utm_medium=referral&amp;utm_campaign=api-credit">Parker Amstutz</a> / <a href="https://unsplash.com/?utm_source=ghost&amp;utm_medium=referral&amp;utm_campaign=api-credit">Unsplash</a></small></p>
-<hr>
-<p>这两天要准备项目重写，打算搞一套自动化编译流程，需要把产物放在一个地方，自然而然就想到了 FTP，而且最近也在玩 Docker，所以就准备先在自己服务器上试一下。</p>
-<p>首先，在 DockerHub 上找到了一个比较好用的<a href="https://hub.docker.com/r/bogem/ftp/">镜像</a>，然后根据 Usage 设置一下用户名、密码、端口号之类的。</p>
-<p>然后运行如下命令即可</p>
-<pre><code>docker run -d -v &lt;host folder&gt;:/home/vsftpd \
--p 20:20 -p 21:21 -p 47400-47470:47400-47470 \
--e FTP_USER=&lt;username&gt; \
--e FTP_PASS=&lt;password&gt; \
--e PASV_ADDRESS=&lt;ip address of your server&gt; \
---name ftp \
---restart=always bogem/ftp
-</code></pre>
-<p>此处有一个需要注意的点就是，PASV_ADDRESS 如果设置成 127.0.0.1，则只能本地访问，设置成 0.0.0.0 则可以外网访问。</p>
-<p>以上的 Docker 操作我是在一款叫做 HyperApp 的 iOS 应用上完成的，非常方便，强烈安利一波。</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[NSLinkAttributeName 属性对应的文字颜色设置]]></title>
-        <id>https://blog.xiaolei.kim/post/wsk2IIkTb</id>
-        <link href="https://blog.xiaolei.kim/post/wsk2IIkTb">
-        </link>
-        <updated>2018-04-18T06:37:03.000Z</updated>
-        <content type="html"><![CDATA[<p>今天写了一个 UITextView，里面赋值了一个 NSAttributedString，其中设置了一个 NSLinkAttributeName 的属性，也就是给一段文字设置了一个超链接。设置完之后，发现这个链接的颜色又变成了系统的丑蓝色。mmp...UIKit 怎么这么热衷于丑蓝呢？然后我就随手设置了一个 NSForegroundColorAttributeName，编译之后，卧槽？不生效？然后又尝试了各种给 NSAttributedString 设置颜色的属性，皆未果。顿时我就方了，这还有坑？</p>
-<p>然后又是一番调研，发现这个超链接的颜色，需要在 UITextView 的 linkTextAttributes 这个属性里面设置。设置完颜色之后，超链接终于展示出了它该有的样子。真是不按常理出牌啊。</p>
-<p>enmmmmm...就像下面这样：</p>
-<pre><code class="language-objc">self.textView.linkTextAttributes = @{NSForegroundColorAttributeName : [UIColor redColor]};
-</code></pre>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[iOS UIBarButtonItem 的图片颜色问题]]></title>
-        <id>https://blog.xiaolei.kim/post/UzPGc9oag</id>
-        <link href="https://blog.xiaolei.kim/post/UzPGc9oag">
-        </link>
-        <updated>2018-04-17T06:36:41.000Z</updated>
-        <content type="html"><![CDATA[<p><img src="https://images.unsplash.com/photo-1523823404920-c5aa35025e89?ixlib=rb-0.3.5&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=1080&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjExNzczfQ&amp;s=a28ab2398ce1263c5f9afffe3ab46a47" alt="">
-<small>Photo by <a href="https://unsplash.com/@mrbw?utm_source=ghost&amp;utm_medium=referral&amp;utm_campaign=api-credit">Brandon Wong</a> / <a href="https://unsplash.com/?utm_source=ghost&amp;utm_medium=referral&amp;utm_campaign=api-credit">Unsplash</a></small></p>
-<hr>
-<p>这两天在搞 iOS 项目，写写 UI，画画界面。今天遇到了一个之前没遇到过的问题，就是设置全局导航栏的返回按钮。这个好说，刷刷刷的搞定了。</p>
-<p>顺便就贴一下代码吧，虽然这不是本题的重点。</p>
-<pre><code class="language-objc">- (void)viewDidLoad {
-    [super viewDidLoad];
-    self.interactivePopGestureRecognizer.delegate = (id&lt;UIGestureRecognizerDelegate&gt;)self;
-}
 
-- (void)popself {
-    [self popViewControllerAnimated:YES];
-}
+            </div>
+          </article>
+        </div>
 
-- (UIBarButtonItem *)createBackButton {
-    UIImage *backImage = [UIImage imageNamed:@&quot;nav_back_black&quot;];
-    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithImage:backImage style:UIBarButtonItemStylePlain target:self action:@selector(popself)];
-    return item;
-}
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://blog.xiaolei.kim/post/PXIlyVOKm">
+              <h3 class="post-title">
+                Docker 搭建 FTP 服务器
+              </h3>
+            </a>
+          </div>
+        
 
-- (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated {
-    [super pushViewController:viewController animated:animated];
-    if (viewController.navigationItem.leftBarButtonItem == nil &amp;&amp; [self.viewControllers count] &gt; 1) {
-        viewController.navigationItem.leftBarButtonItem = [self createBackButton];
-    }
-}
-</code></pre>
-<p>设置完之后，嗯，很好很强大。</p>
-<p>等等？？！</p>
-<p>为什么颜色和图片原来的颜色不一样，变成了 iOS 原生的丑蓝？</p>
-<p>调研了一下发现，原来给 UIBarButtonItem 设置图片的时候，想要保持图片原生颜色的话，需要告诉 UIImage 让它保持自身的颜色。不然就会受 tintColor 的影响。设置方法也很简单，就一行代码。</p>
-<pre><code class="language-objc">UIImage *backImage = [[UIImage imageNamed:@&quot;nav_back_black&quot;] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-</code></pre>
-<p>这样，再设置给 UIBarButtonItem 的话，就不受 tintColor 的影响了。</p>
-<p>好想说废话啊。</p>
-<p>自从换成了 Ghost 之后，写博客太方便了，随手打开 Chrome 就能写，写完就能看，爽死。</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[清除 Chrome 的 DNS Cache]]></title>
-        <id>https://blog.xiaolei.kim/post/E2PlwEanR</id>
-        <link href="https://blog.xiaolei.kim/post/E2PlwEanR">
-        </link>
-        <updated>2018-04-17T06:36:17.000Z</updated>
-        <content type="html"><![CDATA[<p>在 Chrome 地址栏输入： <a href="chrome://net-internals">chrome://net-internals</a></p>
-<p><img src="/content/images/2018/04/-----2018-04-17---10.50.48.png" alt="-----2018-04-17---10.50.48"></p>
-<p>右上角点击 Clear cache，你会发现，它生效了！</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[狗血的中国移动]]></title>
-        <id>https://blog.xiaolei.kim/post/q9N6d08yg</id>
-        <link href="https://blog.xiaolei.kim/post/q9N6d08yg">
-        </link>
-        <updated>2018-04-16T06:35:50.000Z</updated>
-        <content type="html"><![CDATA[<h2 id="浪费我时间-消耗我钱财封我-vultr-的-443-端口">浪费我时间！ 消耗我钱财！！封我 Vultr 的 443 端口！！！</h2>
-<hr>
-<p>本来想给我的 Blog 加一把锁，搞到了最后，竟然因为移动把 Vultr 的 443 端口给封了。
-看看人家隔壁中国电信，跟人家好好学习学习。</p>
-<p>谁曾想，作为中国网民，竟然要浪费大把的时间在墙上面。
-在中国做技术首要技能竟然是上网。
-强烈吐槽啊。
-对我造成了严重的不适。</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[博客搬新家啦]]></title>
-        <id>https://blog.xiaolei.kim/post/twREhBZ4L</id>
-        <link href="https://blog.xiaolei.kim/post/twREhBZ4L">
-        </link>
-        <updated>2018-04-05T06:35:19.000Z</updated>
-        <content type="html"><![CDATA[<p>最近发现 Docker 非常的方便，又凑巧换了个域名，就折腾了一下，把我的博客从 Blogger 迁移到了 WordPress，用了几天之后发现不是特别的满意，昨天晚上从床上爬起来，研究了一下 Ghost。发现它比 WordPress 更符合我的预期，折腾了几个小时，总算是把博客给折腾好了。</p>
-<p>今天又把之前博客的数据迁移了过来，顺便把现在用的主题给优化了一下。现在用的这套主题是喵神之前维护的，但是也是3年前就不更新了，有点不太兼容现在的 Ghost。但是它的确是非常能击中我内心的一套主题，我就在它的基础上稍稍改动了一下，现在你们看到的应该就是这套主题。</p>
-<p>虽然我不怎么写博客，但是我对瞎折腾这件事情真的是乐此不疲的。比如虽然对电脑的使用上并没有很高的要求，但是就是很想装一台吊炸天的机器。说到这里，请允许我默默的悲伤一会儿，本来想着投资点比特币能挣点钱攒一台台式机，谁曾想恰好赶上了一波熊市，被深深的套牢，不能自拔。每天看着不断变化的行情，心情也在起起伏伏。好在这两天有点复苏的苗头，争取早日解套。放了我这棵新鲜的小韭菜。</p>
-<p>币圈有风险，入圈须谨慎啊。</p>
-<p>貌似有点跑题了，再说回博客这一个话题。我发现现在唯一一个让我有点不舒服的地方就是，用 iPhone 在 Ghost 后台发文章的时候，内容部分不能直接输入中文。这一点我很费解，可能是语言什么地方还没有设置对，容我稍后调研一下。</p>
-<p>如果不出意外的话，我可能会一直用 Ghost 这套博客系统了。因为它很轻量，也很简洁美观。最重要的是，它不像 Hexo 那样，写个博客还得部署，然后发布，不能随时随地使用任意一台电脑进行操作，限制太大了，任它再怎么多的主题，我可能都不会再爱上它了。</p>
-<p>哦对了，这套博客是部署在 Vultr 的 Centos 7 上面，然后基于 Docker 进行部署的。顺便还在上面搭了个梯子，其实梯子才是主要目的，放点其他的东西是觉得这么多的流量和空间，不放点别的实在是太浪费了。我还在上面放了一个 <a href="http://2048.xiaolei.kim:8081/">2048</a> 小游戏，在手机浏览器打开就能玩，很有乐趣。后续我可能还会再放一些别的服务上去，敬请期待吧～</p>
-<p>废话就说这么多吧，2017 年发生的变化实在是太多了，等我有时间了，再慢慢的说道说道。</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Xcode 9 正式版模拟器卡顿]]></title>
-        <id>https://blog.xiaolei.kim/post/XynFtnT68</id>
-        <link href="https://blog.xiaolei.kim/post/XynFtnT68">
-        </link>
-        <updated>2017-10-16T06:34:48.000Z</updated>
-        <content type="html"><![CDATA[<p>升级到 Xcode 9 之后，用模拟器打开地图应用，发现图区的渲染简直卡到爆了，刚开始一度怀疑是不是自己的电脑出了什么问题，就用真机跑了跑，发现真机并没有什么问题。就在 Google 上搜了一下，发现这个问题是 Xcode 9 的 bug，导致此 bug 的原因是 模拟器中的 OpenGL 库里的一个依赖占用 CPU 过高。然后我废了九牛二虎之力找到了旧版本 Beta 版模拟器中相应的库进行了替换，问题得到解决。</p>
-<h5 id="以下是解决方法">以下是解决方法：</h5>
-<p>下载 <a href="http://7xii6e.com1.z0.glb.clouddn.com/libCoreVMClient.dylib">libCoreVMClient</a>，替换此文件到以下路径即可：</p>
-<pre><code>/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/Library/CoreSimulator/Profiles/Runtimes/iOS.simruntime/Contents/Resources/RuntimeRoot/System/Library/Frameworks/OpenGLES.framework/libCoreVMClient.dylib
-</code></pre>
-<p>导致此问题的原因，苹果爸爸已经承认，确实是 Xcode 本身的 bug。</p>
-<p>这两年苹果爸爸真是越来越不走心了啊~</p>
-<p><img src="http://7xii6e.com1.z0.glb.clouddn.com/apple-xcode.png" alt="截图"></p>
-]]></content>
-    </entry>
-</feed>
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | 
+  <a class="rss" href="https://blog.xiaolei.kim/atom.xml" target="_blank">RSS</a>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+
+      </div>
+    </div>
+  </body>
+</html>

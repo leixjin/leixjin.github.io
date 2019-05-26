@@ -1,0 +1,135 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>自定义导航栏的返回按钮标题 | leixjin</title>
+<link rel="shortcut icon" href="https://blog.xiaolei.kim/favicon.ico?v=1558853467460">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://blog.xiaolei.kim/styles/main.css">
+
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/moment.js/2.23.0/moment.min.js"></script>
+
+
+
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://blog.xiaolei.kim">
+  <img class="avatar" src="https://blog.xiaolei.kim/images/avatar.png?v=1558853467460" alt="">
+  </a>
+  <h1 class="site-title">
+    leixjin
+  </h1>
+  <p class="site-description">
+    Think different.
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              自定义导航栏的返回按钮标题
+            </h2>
+            <div class="post-info">
+              <time class="post-time">
+                · 2015-07-15 ·
+              </time>
+              
+                <a href="https://blog.xiaolei.kim/tag/aNq11Gn7A" class="post-tag">
+                  # iOS
+                </a>
+              
+            </div>
+            
+              <div class="post-feature-image" style="background-image: url('https://cdn.pixabay.com/photo/2016/02/13/13/11/cuba-1197800_960_720.jpg')">
+              </div>
+            
+            <div class="post-content">
+              <p>在iOS开发中，导航栏的定制是开发人员经常要做的事情，不过有的情况下，使用苹果官方自带的效果也很不错。苹果对导航栏的封装，让开发者省了不少事情。就比如说导航栏的返回按钮，它的标题会自动的显示为上一级控制器的<code>title</code>的内容，但是如果上一级的标题过长，它便会自动的变成“返回”两个字。有的时候，返回按钮的字太多也会影响美观，所以改变返回按钮的标题也是一种需求。但是如果你尝试着在当前控制器更改返回按钮的标题：</p>
+<pre><code class="language-objc">self.navigationItem.backBarButtonItem.title = @&quot;xxx&quot;;
+</code></pre>
+<p>你会发现，这样做并没有什么用。</p>
+<p>实际上，当前控制器的<code>backBarButtonItem</code>是需要在被push过来之前，在上级控制器中设置的。</p>
+<p>正确的做法，是这样：</p>
+<pre><code class="language-objc">UIBarButtonItem *backItem = [[UIBarButtonItem alloc]init];
+backItem.title = @&quot;xxx&quot;;
+self.navigationItem.backBarButtonItem = backItem;
+</code></pre>
+<p>在这里请注意，设置的是上一级控制器自己的<code>self.navigationItem.backBarButtonItem</code>，而不是下一级的。</p>
+
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://blog.xiaolei.kim/post/7yuXy5gwN">
+              <h3 class="post-title">
+                Xcode常用插件整理
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | 
+  <a class="rss" href="https://blog.xiaolei.kim/atom.xml" target="_blank">RSS</a>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,203 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>利用Runtime自定义导航控制器返回手势 | leixjin</title>
+<link rel="shortcut icon" href="https://blog.xiaolei.kim/favicon.ico?v=1558853467460">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://blog.xiaolei.kim/styles/main.css">
+
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/moment.js/2.23.0/moment.min.js"></script>
+
+
+
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://blog.xiaolei.kim">
+  <img class="avatar" src="https://blog.xiaolei.kim/images/avatar.png?v=1558853467460" alt="">
+  </a>
+  <h1 class="site-title">
+    leixjin
+  </h1>
+  <p class="site-description">
+    Think different.
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              利用Runtime自定义导航控制器返回手势
+            </h2>
+            <div class="post-info">
+              <time class="post-time">
+                · 2015-09-26 ·
+              </time>
+              
+                <a href="https://blog.xiaolei.kim/tag/aNq11Gn7A" class="post-tag">
+                  # iOS
+                </a>
+              
+            </div>
+            
+              <div class="post-feature-image" style="background-image: url('https://cdn.pixabay.com/photo/2016/07/07/22/43/morning-1503340_960_720.jpg')">
+              </div>
+            
+            <div class="post-content">
+              <p>自从iOS7之后，系统的导航控制器就具备了边缘滑动返回的功能，这使得用户能够很方便的退出当前页面，大屏的用户不用再费力的去点击导航栏上的返回按钮，很是人性化。但是有些用户觉得这样还是不方便，只能从边缘滑动哪行啊，我要全屏都能滑！于是乎，很多应用，比如QQ、知乎等都实现了这一功能。想要实现这一功能，有好多种方法，而本文介绍的这种方法，是比较好玩的一种方法，因为我们用到了苹果私有的API。虽然违反了苹果的审核政策，但我们自有办法能躲过苹果的检测。下面，就来聊一下实现过程。</p>
+<p>首先，我们需要知道系统的侧滑手势是如何实现的。</p>
+<p>进入<code>UINavigationController</code>的头文件里，会发现有一个手势<code>interactivePopGestureRecognizer</code>,它是只读的。为了详细的了解这个属性，我们在控制台打印一下它，看看它到底是一个什么手势。</p>
+<pre><code class="language-objc"> &lt;
+   UIScreenEdgePanGestureRecognizer: 0x7f99d1e10ba0;
+   state = Possible;
+   delaysTouchesBegan = YES; 
+   view = &lt;UILayoutContainerView 0x7f99d1e0b7f0&gt;; 
+   target= &lt;(action=handleNavigationTransition:, 
+   target=&lt;_UINavigationInteractiveTransition 0x7f99d1e0fc10&gt;)&gt;
+   &gt;
+</code></pre>
+<p>可以看到，这个手势属于<code>UIScreenEdgePanGestureRecognizer</code>这个类，它继承自<code>UIPanGestureRecognizer</code>，是专门处理边缘手势的一个类。我们可以通过打印发现它的<code>target：_UINavigationInteractiveTransition</code>（这是一个私有的类，用于处理导航栏动画的），<code>action：handleNavigationTransition:</code>(这个就是系统实现导航栏动画的私有方法)。我们要做的，就是自己新建一个<code>UIPanGestureRecognizer</code>手势，让它的<code>target</code>和<code>action</code>和系统的相同。</p>
+<p>首先，我们需要先获取系统的侧滑手势的<code>target</code>，用常规的手法肯定是获取不到的，因为这是系统私有属性。我们需要用<code>runtime</code>遍历它的成员变量，看一下系统是如何存储这个属性的。</p>
+<pre><code class="language-objc">    unsigned int count;
+    Ivar *ivar = class_copyIvarList([UIGestureRecognizer class], &amp;count);
+    for (int i = 0; i &lt; count; i++) {
+        Ivar var = ivar[i];
+        NSLog(@&quot;type:===&gt;%s&quot;,ivar_getTypeEncoding(var));
+        NSLog(@&quot;name:===&gt;%s&quot;,ivar_getName(var));
+    }
+</code></pre>
+<p>下面是打印的结果,我只取了两条有用的结果：</p>
+<pre><code class="language-objc">2015-09-24 15:10:30.879 Nav[1897:149271] type:===&gt;@&quot;NSMutableArray&quot;
+2015-09-24 15:10:30.879 Nav[1897:149271] name:===&gt;_targets
+</code></pre>
+<p>我们再来打印一下这个<code>_targets</code>数组，看看里面是什么:</p>
+<pre><code class="language-objc">    NSMutableArray *_targets = [systemPopGes valueForKey:@&quot;_targets&quot;];
+    NSLog(@&quot;%@&quot;,_targets);
+</code></pre>
+<p>打印结果如下：</p>
+<pre><code class="language-objc">(&quot;(action=handleNavigationTransition:, target=&lt;_UINavigationInteractiveTransition 0x7fcd0b5195c0&gt;)&quot;)
+</code></pre>
+<p>可以看到，可变数组里存储的，就是系统实现导航栏动画的<code>target</code>和<code>action</code>，获取这个数组的<code>key</code>就是<code>_targets</code>。</p>
+<p>所以，我们可以通过<code>KVC</code>获取系统存储这个<code>target-action</code>的数组，然后获取系统的<code>target-action</code>，自己创建一个滑动手势，加入到系统实现侧滑手势所在的<code>view</code>中，禁用系统的侧滑手势，我们自定义的手势就可以代替系统的手势，实现滑动了。</p>
+<p>下面是实现代码：</p>
+<pre><code class="language-objc">#import &quot;JXLNavigationController.h&quot;
+#import &lt;objc/runtime.h&gt;
+
+@interface JXLNavigationController ()&lt;UIGestureRecognizerDelegate&gt;
+
+@end
+
+@implementation JXLNavigationController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    //获取系统侧滑手势
+    UIGestureRecognizer *systemPopGes = self.interactivePopGestureRecognizer;
+    //禁用系统侧滑
+    systemPopGes.enabled = NO;
+    //得到系统target-action数组
+    NSMutableArray *_targets = [systemPopGes valueForKey:@&quot;_targets&quot;];
+    //取出系统实现侧滑的target
+    id systemPanTarget = [_targets.firstObject valueForKey:@&quot;target&quot;];
+    //获取系统实现侧滑的action
+    SEL systemAction = NSSelectorFromString(@&quot;handleNavigationTransition:&quot;);
+    //自定义滑动手势
+    UIPanGestureRecognizer *myPan = [[UIPanGestureRecognizer alloc] initWithTarget:systemPanTarget action:systemAction];
+    myPan.delegate = self;
+    myPan.maximumNumberOfTouches = 1;
+    //向系统实现侧滑的view中加入自定义的滑动手势
+    [systemPopGes.view addGestureRecognizer:myPan];
+}
+
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
+    //在根视图或者正在滑动时禁用手势
+    return self.viewControllers.count != 1 &amp;&amp; ![[self valueForKey:@&quot;_interactiveTransition&quot;] boolValue];
+}
+
+@end
+</code></pre>
+<p>以上就是简单的实现了一个自定义导航栏滑动手势的UINavigationController，只要继承这个导航控制器，就可以全局实现全屏侧滑手势，当然系统版本一定要在iOS7.0以上才行。</p>
+<p>在刚开始的时候我说到这个方法涉及苹果私有API，在发布时可能有被拒的风险，我们可以通过下面的方法简单的避免。</p>
+<pre><code class="language-objc">    NSString *selectorStringBegin = @&quot;handleNavigation&quot;;
+    NSString *selectorStringEnd = @&quot;Transition:&quot;;
+    NSString *selectorString = [NSString stringWithFormat:@&quot;%@%@&quot;,selectorStringBegin,selectorStringEnd];
+    SEL systemAction = NSSelectorFromString(selectorString);
+</code></pre>
+
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://blog.xiaolei.kim/post/ytLmm1KmI">
+              <h3 class="post-title">
+                Xcode7代码折叠
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | 
+  <a class="rss" href="https://blog.xiaolei.kim/atom.xml" target="_blank">RSS</a>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+
+      </div>
+    </div>
+  </body>
+</html>

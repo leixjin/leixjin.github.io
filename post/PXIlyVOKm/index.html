@@ -1,0 +1,140 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Docker 搭建 FTP 服务器 | leixjin</title>
+<link rel="shortcut icon" href="https://blog.xiaolei.kim/favicon.ico?v=1558853467460">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://blog.xiaolei.kim/styles/main.css">
+
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/moment.js/2.23.0/moment.min.js"></script>
+
+
+
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://blog.xiaolei.kim">
+  <img class="avatar" src="https://blog.xiaolei.kim/images/avatar.png?v=1558853467460" alt="">
+  </a>
+  <h1 class="site-title">
+    leixjin
+  </h1>
+  <p class="site-description">
+    Think different.
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              Docker 搭建 FTP 服务器
+            </h2>
+            <div class="post-info">
+              <time class="post-time">
+                · 2018-04-26 ·
+              </time>
+              
+                <a href="https://blog.xiaolei.kim/tag/OV1lmj4PZ" class="post-tag">
+                  # 技术
+                </a>
+              
+            </div>
+            
+              <div class="post-feature-image" style="background-image: url('https://cdn.pixabay.com/photo/2014/12/15/16/57/tree-trunk-569275_960_720.jpg')">
+              </div>
+            
+            <div class="post-content">
+              <p><img src="https://images.unsplash.com/photo-1524507390346-633e7cabc14b?ixlib=rb-0.3.5&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=1080&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjExNzczfQ&amp;s=1f55f3e32fce4af14eed0cc1799d5b96" alt="">
+<small>Photo by <a href="https://unsplash.com/@pramstutz?utm_source=ghost&amp;utm_medium=referral&amp;utm_campaign=api-credit">Parker Amstutz</a> / <a href="https://unsplash.com/?utm_source=ghost&amp;utm_medium=referral&amp;utm_campaign=api-credit">Unsplash</a></small></p>
+<hr>
+<p>这两天要准备项目重写，打算搞一套自动化编译流程，需要把产物放在一个地方，自然而然就想到了 FTP，而且最近也在玩 Docker，所以就准备先在自己服务器上试一下。</p>
+<p>首先，在 DockerHub 上找到了一个比较好用的<a href="https://hub.docker.com/r/bogem/ftp/">镜像</a>，然后根据 Usage 设置一下用户名、密码、端口号之类的。</p>
+<p>然后运行如下命令即可</p>
+<pre><code>docker run -d -v &lt;host folder&gt;:/home/vsftpd \
+-p 20:20 -p 21:21 -p 47400-47470:47400-47470 \
+-e FTP_USER=&lt;username&gt; \
+-e FTP_PASS=&lt;password&gt; \
+-e PASV_ADDRESS=&lt;ip address of your server&gt; \
+--name ftp \
+--restart=always bogem/ftp
+</code></pre>
+<p>此处有一个需要注意的点就是，PASV_ADDRESS 如果设置成 127.0.0.1，则只能本地访问，设置成 0.0.0.0 则可以外网访问。</p>
+<p>以上的 Docker 操作我是在一款叫做 HyperApp 的 iOS 应用上完成的，非常方便，强烈安利一波。</p>
+
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://blog.xiaolei.kim/post/wsk2IIkTb">
+              <h3 class="post-title">
+                NSLinkAttributeName 属性对应的文字颜色设置
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | 
+  <a class="rss" href="https://blog.xiaolei.kim/atom.xml" target="_blank">RSS</a>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+
+      </div>
+    </div>
+  </body>
+</html>

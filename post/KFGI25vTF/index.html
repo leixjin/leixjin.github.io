@@ -1,9 +1,9 @@
 <html>
   <head>
-  <meta charset="utf-8" />
+    <meta charset="utf-8" />
 <meta name="description" content="" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>leixjin</title>
+<title>解决 DrawInRect 绘图不清晰的问题 | leixjin</title>
 <link rel="shortcut icon" href="https://blog.xiaolei.kim/favicon.ico?v=1558853467460">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
@@ -71,17 +71,49 @@
 </div>
 
 
-        <div class="tags-container">
-          
-            <a class="tag" href="https://blog.xiaolei.kim/tag/OhXZ6-ghv">Mac</a>
-          
-            <a class="tag" href="https://blog.xiaolei.kim/tag/OV1lmj4PZ">技术</a>
-          
-            <a class="tag" href="https://blog.xiaolei.kim/tag/aNq11Gn7A">iOS</a>
-          
-            <a class="tag" href="https://blog.xiaolei.kim/tag/hVGlDuqBs">生活</a>
-          
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              解决 DrawInRect 绘图不清晰的问题
+            </h2>
+            <div class="post-info">
+              <time class="post-time">
+                · 2015-04-09 ·
+              </time>
+              
+                <a href="https://blog.xiaolei.kim/tag/aNq11Gn7A" class="post-tag">
+                  # iOS
+                </a>
+              
+            </div>
+            
+              <div class="post-feature-image" style="background-image: url('https://cdn.pixabay.com/photo/2015/09/09/16/05/forest-931706_960_720.jpg')">
+              </div>
+            
+            <div class="post-content">
+              <p>最近在做的项目有个需求，在分享的图片上加上公司的水印。我一想这不是分分钟的事情么，刷刷刷的就给写好了。然后得到图片一看，傻眼了，卧槽为什么这图片跟打了马赛克一样？百思不得其解啊，只好求助Google大神了，经过几番寻找，终于被我找到了解决办法，原来是Scale这个小妖精在作怪。</p>
+<p>其实解决问题的办法也很简单，只需要把创建上下文的那一行代码改掉就可以了，话不多说，贴代码。</p>
+<pre><code class="language-objc">UIGraphicsBeginImageContext(image.size);
+//改成下面的这一行
+UIGraphicsBeginImageContextWithOptions(image.size, NO, 0.0);
+</code></pre>
+
+            </div>
+          </article>
         </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://blog.xiaolei.kim/post/sqlite">
+              <h3 class="post-title">
+                SQLite 和 SQL
+              </h3>
+            </a>
+          </div>
+        
+
+        
 
         <div class="site-footer">
   Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | 

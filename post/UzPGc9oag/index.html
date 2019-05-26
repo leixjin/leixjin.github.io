@@ -1,0 +1,160 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>iOS UIBarButtonItem 的图片颜色问题 | leixjin</title>
+<link rel="shortcut icon" href="https://blog.xiaolei.kim/favicon.ico?v=1558853467460">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://blog.xiaolei.kim/styles/main.css">
+
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/moment.js/2.23.0/moment.min.js"></script>
+
+
+
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://blog.xiaolei.kim">
+  <img class="avatar" src="https://blog.xiaolei.kim/images/avatar.png?v=1558853467460" alt="">
+  </a>
+  <h1 class="site-title">
+    leixjin
+  </h1>
+  <p class="site-description">
+    Think different.
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              iOS UIBarButtonItem 的图片颜色问题
+            </h2>
+            <div class="post-info">
+              <time class="post-time">
+                · 2018-04-17 ·
+              </time>
+              
+                <a href="https://blog.xiaolei.kim/tag/aNq11Gn7A" class="post-tag">
+                  # iOS
+                </a>
+              
+            </div>
+            
+              <div class="post-feature-image" style="background-image: url('https://cdn.pixabay.com/photo/2013/07/25/01/31/sunlight-166733_960_720.jpg')">
+              </div>
+            
+            <div class="post-content">
+              <p><img src="https://images.unsplash.com/photo-1523823404920-c5aa35025e89?ixlib=rb-0.3.5&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=1080&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjExNzczfQ&amp;s=a28ab2398ce1263c5f9afffe3ab46a47" alt="">
+<small>Photo by <a href="https://unsplash.com/@mrbw?utm_source=ghost&amp;utm_medium=referral&amp;utm_campaign=api-credit">Brandon Wong</a> / <a href="https://unsplash.com/?utm_source=ghost&amp;utm_medium=referral&amp;utm_campaign=api-credit">Unsplash</a></small></p>
+<hr>
+<p>这两天在搞 iOS 项目，写写 UI，画画界面。今天遇到了一个之前没遇到过的问题，就是设置全局导航栏的返回按钮。这个好说，刷刷刷的搞定了。</p>
+<p>顺便就贴一下代码吧，虽然这不是本题的重点。</p>
+<pre><code class="language-objc">- (void)viewDidLoad {
+    [super viewDidLoad];
+    self.interactivePopGestureRecognizer.delegate = (id&lt;UIGestureRecognizerDelegate&gt;)self;
+}
+
+- (void)popself {
+    [self popViewControllerAnimated:YES];
+}
+
+- (UIBarButtonItem *)createBackButton {
+    UIImage *backImage = [UIImage imageNamed:@&quot;nav_back_black&quot;];
+    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithImage:backImage style:UIBarButtonItemStylePlain target:self action:@selector(popself)];
+    return item;
+}
+
+- (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated {
+    [super pushViewController:viewController animated:animated];
+    if (viewController.navigationItem.leftBarButtonItem == nil &amp;&amp; [self.viewControllers count] &gt; 1) {
+        viewController.navigationItem.leftBarButtonItem = [self createBackButton];
+    }
+}
+</code></pre>
+<p>设置完之后，嗯，很好很强大。</p>
+<p>等等？？！</p>
+<p>为什么颜色和图片原来的颜色不一样，变成了 iOS 原生的丑蓝？</p>
+<p>调研了一下发现，原来给 UIBarButtonItem 设置图片的时候，想要保持图片原生颜色的话，需要告诉 UIImage 让它保持自身的颜色。不然就会受 tintColor 的影响。设置方法也很简单，就一行代码。</p>
+<pre><code class="language-objc">UIImage *backImage = [[UIImage imageNamed:@&quot;nav_back_black&quot;] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+</code></pre>
+<p>这样，再设置给 UIBarButtonItem 的话，就不受 tintColor 的影响了。</p>
+<p>好想说废话啊。</p>
+<p>自从换成了 Ghost 之后，写博客太方便了，随手打开 Chrome 就能写，写完就能看，爽死。</p>
+
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://blog.xiaolei.kim/post/E2PlwEanR">
+              <h3 class="post-title">
+                清除 Chrome 的 DNS Cache
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | 
+  <a class="rss" href="https://blog.xiaolei.kim/atom.xml" target="_blank">RSS</a>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+
+      </div>
+    </div>
+  </body>
+</html>

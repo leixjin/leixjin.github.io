@@ -1,0 +1,240 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Core NFC 初体验 | leixjin</title>
+<link rel="shortcut icon" href="https://blog.xiaolei.kim/favicon.ico?v=1558853467460">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://blog.xiaolei.kim/styles/main.css">
+
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/moment.js/2.23.0/moment.min.js"></script>
+
+
+
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://blog.xiaolei.kim">
+  <img class="avatar" src="https://blog.xiaolei.kim/images/avatar.png?v=1558853467460" alt="">
+  </a>
+  <h1 class="site-title">
+    leixjin
+  </h1>
+  <p class="site-description">
+    Think different.
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              Core NFC 初体验
+            </h2>
+            <div class="post-info">
+              <time class="post-time">
+                · 2017-06-17 ·
+              </time>
+              
+                <a href="https://blog.xiaolei.kim/tag/aNq11Gn7A" class="post-tag">
+                  # iOS
+                </a>
+              
+            </div>
+            
+              <div class="post-feature-image" style="background-image: url('https://cdn.pixabay.com/photo/2015/02/20/16/59/hirsch-643340_960_720.jpg')">
+              </div>
+            
+            <div class="post-content">
+              <p>随着 WWDC 2017 的落幕，一大批新的技术(像 ARKit、Core ML、Core NFC 等等……)开始逐渐为开发者所知。开发者们又有了新的玩具可以玩一阵子了~</p>
+<p>这篇文章就单独拿 Core NFC 来说吧，毕竟它和我们的生活紧密相关。</p>
+<blockquote>
+<p>注意：浏览本文中的部分图片需要科学上网。</p>
+</blockquote>
+<p>这次苹果爸爸只开始开放了 NFC 的读取权限，所以想拿 iPhone 当公交卡的同学，可能又要伤心了。但是拿 iPhone 来当个读卡器什么的，还是能玩一玩的~</p>
+<blockquote>
+<p>然鹅，只有那些拥有 iOS 11 系统的 iPhone 7/7P 的同学，才能拥有这些尊贵的特权。</p>
+</blockquote>
+<p><img src="http://upload-images.jianshu.io/upload_images/1688625-0962d5881300e923.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000" alt="NFC"></p>
+<p>这次放出的 Core NFC 可以说是非常的轻量了，使用起来简直不能再简单一点。上图是 WWDC 上苹果提供的技术细分图，可以说基本涵盖了所有的格式。可以实现检测 NFC 标签 (NFC tags) 并读取包含 NDEF(NFC Data Exchange Format) 的数据。</p>
+<h1 id="实现步骤">实现步骤</h1>
+<h2 id="配置">配置</h2>
+<ul>
+<li>在开发者后台给你的 App ID 添加 NFC 读取权限。</li>
+</ul>
+<p><img src="https://i.stack.imgur.com/ENL6P.png" alt="step 1"></p>
+<ul>
+<li>在 Info.plist 里添加如下信息，用来提示用户获取设备的 NFC 读取权限。</li>
+</ul>
+<pre><code>&lt;key&gt;NFCReaderUsageDescription&lt;/key&gt;
+&lt;string&gt;some description...&lt;/string&gt;
+</code></pre>
+<ul>
+<li>在 entitlements 文件里添加如下信息。</li>
+</ul>
+<pre><code>&lt;key&gt;com.apple.developer.nfc.readersession.formats&lt;/key&gt;
+    &lt;array&gt;
+        &lt;string&gt;NDEF&lt;/string&gt;
+    &lt;/array&gt;
+</code></pre>
+<h2 id="代码实现">代码实现</h2>
+<h3 id="objective-c">Objective-c</h3>
+<ul>
+<li>导入 CoreNFC 头文件</li>
+</ul>
+<pre><code>#import &lt;CoreNFC/CoreNFC.h&gt;
+</code></pre>
+<ul>
+<li>设置代理</li>
+</ul>
+<pre><code>@interface YourViewController : UIViewController &lt;NFCNDEFReaderSessionDelegate&gt;
+</code></pre>
+<ul>
+<li>在 .m 中实现如下代码</li>
+</ul>
+<pre><code class="language-objc">- (void)viewDidLoad {
+    [super viewDidLoad];
+    NFCNDEFReaderSession *session = [[NFCNDEFReaderSession alloc] initWithDelegate:self queue:dispatch_queue_create(NULL, DISPATCH_QUEUE_CONCURRENT) invalidateAfterFirstRead:NO];
+    [session beginSession];
+}
+
+- (void)readerSession:(nonnull NFCNDEFReaderSession *)session didDetectNDEFs:(nonnull NSArray&lt;NFCNDEFMessage *&gt; *)messages {
+    for (NFCNDEFMessage *message in messages) {
+        for (NFCNDEFPayload *payload in message.records) {
+            NSLog(@&quot;Payload data:%@&quot;,payload.payload);
+        }
+    }        
+}
+
+- (void)readerSession:(NFCNDEFReaderSession *)session didInvalidateWithError:(NSError *)error{
+    NSLog(@&quot;%@&quot;,error);
+}
+
+</code></pre>
+<ul>
+<li>你可以用如下方法停止 session</li>
+</ul>
+<pre><code>[session invalidateSession];
+</code></pre>
+<h3 id="swift">Swift</h3>
+<ul>
+<li>导入 CoreNFC</li>
+</ul>
+<pre><code class="language-swift">import CoreNFC
+</code></pre>
+<ul>
+<li>设置代理</li>
+</ul>
+<pre><code class="language-swift">class YourViewController: UIViewController, NFCNDEFReaderSessionDelegate
+</code></pre>
+<ul>
+<li>实现如下代码</li>
+</ul>
+<pre><code class="language-swift">override func viewDidLoad() {
+        super.viewDidLoad()
+
+        let session = NFCNDEFReaderSession(delegate: self,
+                      queue: DispatchQueue(label: &quot;queueName&quot;, attributes: .concurrent), invalidateAfterFirstRead: false)
+        session.begin()
+    }
+
+func readerSession(_ session: NFCNDEFReaderSession, didDetectNDEFs messages: [NFCNDEFMessage]) {
+    for message in messages {
+    for record in message.records {
+      print(record.payload)
+    }
+  }
+}
+
+func readerSession(_ session: NFCNDEFReaderSession, didInvalidateWithError error: Error) {
+        print(error.localizedDescription)
+    }
+</code></pre>
+<ul>
+<li>你可以用如下方法停止 session</li>
+</ul>
+<pre><code class="language-swift">session.invalidate()
+</code></pre>
+<blockquote>
+<p>注：每个 session 的扫描时间最多60s，如果超时需要再次开启 session。</p>
+</blockquote>
+<p>以上，就是最简单的代码实现。</p>
+<p>如果不出意外的话，编译并运行刚刚的代码，在 App 启动的时候，会出现如下场景...</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1196804-937b3d5dcb2237bd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="launch"></p>
+<p>恭喜！你的第一个 NFC Demo 已经完成，快用你的卡片试一下吧！</p>
+
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://blog.xiaolei.kim/post/q9f3GokcV">
+              <h3 class="post-title">
+                多说，不说
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | 
+  <a class="rss" href="https://blog.xiaolei.kim/atom.xml" target="_blank">RSS</a>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+
+      </div>
+    </div>
+  </body>
+</html>

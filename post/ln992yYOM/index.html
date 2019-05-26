@@ -1,0 +1,162 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>纯代码创建 UIDisplaySearchController 遇到的问题 | leixjin</title>
+<link rel="shortcut icon" href="https://blog.xiaolei.kim/favicon.ico?v=1558853467460">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://blog.xiaolei.kim/styles/main.css">
+
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/moment.js/2.23.0/moment.min.js"></script>
+
+
+
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://blog.xiaolei.kim">
+  <img class="avatar" src="https://blog.xiaolei.kim/images/avatar.png?v=1558853467460" alt="">
+  </a>
+  <h1 class="site-title">
+    leixjin
+  </h1>
+  <p class="site-description">
+    Think different.
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              纯代码创建 UIDisplaySearchController 遇到的问题
+            </h2>
+            <div class="post-info">
+              <time class="post-time">
+                · 2015-07-18 ·
+              </time>
+              
+                <a href="https://blog.xiaolei.kim/tag/aNq11Gn7A" class="post-tag">
+                  # iOS
+                </a>
+              
+            </div>
+            
+              <div class="post-feature-image" style="background-image: url('https://cdn.pixabay.com/photo/2018/04/03/20/29/forest-3287976_960_720.jpg')">
+              </div>
+            
+            <div class="post-content">
+              <p>这两天需要在程序原有的界面上增加一个搜索地理位置，根据用户选择的地理位置获取对应地点的相关职位的功能。很显然这种界面大家所普遍使用的就是<code>UISearchBar</code>+<code>UISearchDisplayController</code>，这种苹果官方的效果不仅很省空间，而且动画以及显示效果都很美观。很早以前就知道有这样一个控件，但是没有用过，今天看了一下API文档，很平常的使用方法：</p>
+<p>先创建一个UISearchBar，添加到视图中，设置好代理，并实现必要的代理方法</p>
+<pre><code class="language-objc">UISearchBar *searchBar = [[UISearchBar alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 44)];
+self.tableView.tableHeaderView = searchBar;
+searchBar.delegate = searchBar;
+</code></pre>
+<p>然后再创建一个UISearchDisplayController，把相应的参数传进去，并设置代理，实现必要的代理方法</p>
+<pre><code class="language-objc">UISearchDisplayController *searchVC = [[UISearchDisplayController alloc]initWithSearchBar:searchBar contentsController:self];
+searchVC.delegate = self;
+searchVC.searchResultsDataSource = self;
+searchVC.searchResultsDelegate = self;
+</code></pre>
+<p>正常情况下，应该能够在输入文字的时候显示出一个动态的<code>UITableView</code>，但是，无论我怎么努力，它就是不能正常的显示。</p>
+<p>经过一番研究之后，我发现，大多数博客或者教程写的都是用IB实现的，用IB拖进去的话，<code>Xcode</code>会自动的把<code>UISearchDisplayCountroller</code>添加到<code>UIViewController</code>中，如果使用纯代码实现，需要修改一点点东西。</p>
+<p>想实现动态的效果，<code>UISearchDisplayCountroller</code>必须包含<code>UIViewController</code>中,与之想关联,才能出现动态效果。</p>
+<p>而且在<code>UIViewController</code>中的属性</p>
+<pre><code class="language-objc">@property(nonatomic, readonly, retain) UISearchDisplayController *searchDisplayController;
+</code></pre>
+<p>看到了<code>readonly</code>没，这就是问题所在。</p>
+<p>下面我们就来解决这个问题</p>
+<p>首先，在视图控制器的.h文件中添加属性：</p>
+<pre><code class="language-objc">@property(nonatomic, retain) UISearchDisplayController *searchDisplayController;
+</code></pre>
+<p>可以看到，我们去掉了readonly</p>
+<p>然后在.m文件中，添加如下代码：</p>
+<pre><code class="language-objc">@synthesize searchDisplayController;
+</code></pre>
+<p>这样，我们再写：</p>
+<pre><code class="language-objc">UISearchBar *searchBar = [[UISearchBar alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 44)];
+searchBar.delegate = self;
+self.tableView.tableHeaderView = searchBar;
+    
+self.searchDisplayController = [[UISearchDisplayController alloc]initWithSearchBar:searchBar contentsController:self];
+self.searchDisplayController.delegate = self;
+self.searchDisplayController.searchResultsDataSource = self;
+self.searchDisplayController.searchResultsDelegate = self;
+</code></pre>
+<p>Bingo！！！就可以在输入文字的时候，看到动态的效果啦！</p>
+
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://blog.xiaolei.kim/post/1jJFHjTBW">
+              <h3 class="post-title">
+                Xcode6.X手动安装低版本模拟器
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | 
+  <a class="rss" href="https://blog.xiaolei.kim/atom.xml" target="_blank">RSS</a>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+
+      </div>
+    </div>
+  </body>
+</html>
