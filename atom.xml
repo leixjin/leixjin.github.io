@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://blog.xiaolei.kim</id>
     <title>leixjin</title>
-    <updated>2019-05-26T06:53:23.965Z</updated>
+    <updated>2019-05-26T09:59:17.113Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://blog.xiaolei.kim"/>
     <link rel="self" href="https://blog.xiaolei.kim/atom.xml"/>
@@ -28,9 +28,7 @@ sudo dscacheutil -flushcache
         <link href="https://blog.xiaolei.kim/post/WOmXokNwB">
         </link>
         <updated>2018-07-25T06:39:27.000Z</updated>
-        <content type="html"><![CDATA[<p><img src="https://images.unsplash.com/photo-1532423622396-10a3f979251a?ixlib=rb-0.3.5&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=1080&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjExNzczfQ&amp;s=5d5a21ffdb1e8aa1313909b1ec1b58f6" alt="">
-<small>Photo by <a href="https://unsplash.com/@eberhardgross?utm_source=ghost&amp;utm_medium=referral&amp;utm_campaign=api-credit">eberhard grossgasteiger</a> / <a href="https://unsplash.com/?utm_source=ghost&amp;utm_medium=referral&amp;utm_campaign=api-credit">Unsplash</a></small></p>
-<p>最近想配置一个 Ghost 的多账户，在点完邀请链接之后没有任何效果。遂猜想是不是因为需要配置发件服务器的原因，查了一下果然是需要单独配置才能发送邀请邮件。于是便开始折腾。</p>
+        <content type="html"><![CDATA[<p>最近想配置一个 Ghost 的多账户，在点完邀请链接之后没有任何效果。遂猜想是不是因为需要配置发件服务器的原因，查了一下果然是需要单独配置才能发送邀请邮件。于是便开始折腾。</p>
 <p>首先，我的 Ghost 是基于 Docker 搭建的，而且是用 HyperApp 搭建的，所以可指定的自定义配置就比较少。我们需要先获取到 Ghost 的配置文件。</p>
 <p>它存在于 Docker 容器内，我们需要先拷贝出来</p>
 <p>拷贝 Docker 容器内的文件可以用这样的命令：</p>
