@@ -4,7 +4,7 @@
 <meta name="description" content="" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>iOS 国际化开发 | leixjin</title>
-<link rel="shortcut icon" href="https://blog.xiaolei.kim/favicon.ico?v=1558864780614">
+<link rel="shortcut icon" href="https://blog.xiaolei.kim/favicon.ico?v=1582613369471">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
 <link rel="stylesheet" href="https://blog.xiaolei.kim/styles/main.css">
@@ -20,7 +20,7 @@
       <div class="main-content">
         <div class="site-header">
   <a href="https://blog.xiaolei.kim">
-  <img class="avatar" src="https://blog.xiaolei.kim/images/avatar.png?v=1558864780614" alt="">
+  <img class="avatar" src="https://blog.xiaolei.kim/images/avatar.png?v=1582613369471" alt="">
   </a>
   <h1 class="site-title">
     leixjin
@@ -81,7 +81,7 @@
                 · 2016-04-25 ·
               </time>
               
-                <a href="https://blog.xiaolei.kim/tag/aNq11Gn7A" class="post-tag">
+                <a href="https://blog.xiaolei.kim/tag/aNq11Gn7A/" class="post-tag">
                   # iOS
                 </a>
               
@@ -105,15 +105,15 @@
 <blockquote>
 <p>这里Use Base Internationalization开启状态下，每个国际化资源文件会有个Base选项，主要针对String，Xib，Storyboard作为一个基础的模板。</p>
 </blockquote>
-<p><img src="http://7xii6e.com1.z0.glb.clouddn.com/Localized_support.png" alt="是否添加Xib支持"></p>
-<p><img src="http://7xii6e.com1.z0.glb.clouddn.com/Localized_add.png" alt="添加多语言支持"></p>
+<figure data-type="image" tabindex="1"><img src="http://7xii6e.com1.z0.glb.clouddn.com/Localized_support.png" alt="是否添加Xib支持" loading="lazy"></figure>
+<figure data-type="image" tabindex="2"><img src="http://7xii6e.com1.z0.glb.clouddn.com/Localized_add.png" alt="添加多语言支持" loading="lazy"></figure>
 <p>2.创建多语言文件，一般命名为Localizable.string。如果在开发过程中不指定文件名，系统会默认在Bundle中寻找这个名称的文件。当然，也可以任意命名，在开发过程中手动指定一下文件名即可。</p>
-<p><img src="http://7xii6e.com1.z0.glb.clouddn.com/Localized_string.png" alt="添加多语言文件"></p>
+<figure data-type="image" tabindex="3"><img src="http://7xii6e.com1.z0.glb.clouddn.com/Localized_string.png" alt="添加多语言文件" loading="lazy"></figure>
 <p>3.找到并选中刚刚新建的Localizable.string文件，点击Inspector下Localization选项下的Localize按钮，任意选择一个语言(我选择的是English)，然后点击Localize按钮，此时Localization选项会出现应用支持的语言列表，选择需要国际化的语言，Localizable.string文件下则会多出和所选择语言对应的子文件。</p>
-<p><img src="http://7xii6e.com1.z0.glb.clouddn.com/Localized_localized.png" alt="点击Localize按钮"></p>
-<p><img src="http://7xii6e.com1.z0.glb.clouddn.com/Localized_localized_choose.png" alt="选择语言"></p>
-<p><img src="http://7xii6e.com1.z0.glb.clouddn.com/Localized_localized_list.png" alt="出现语言列表"></p>
-<p><img src="http://7xii6e.com1.z0.glb.clouddn.com/Localized_localized_LocalizationStrings.png" alt="添加需要国际化的语言"></p>
+<figure data-type="image" tabindex="4"><img src="http://7xii6e.com1.z0.glb.clouddn.com/Localized_localized.png" alt="点击Localize按钮" loading="lazy"></figure>
+<figure data-type="image" tabindex="5"><img src="http://7xii6e.com1.z0.glb.clouddn.com/Localized_localized_choose.png" alt="选择语言" loading="lazy"></figure>
+<figure data-type="image" tabindex="6"><img src="http://7xii6e.com1.z0.glb.clouddn.com/Localized_localized_list.png" alt="出现语言列表" loading="lazy"></figure>
+<figure data-type="image" tabindex="7"><img src="http://7xii6e.com1.z0.glb.clouddn.com/Localized_localized_LocalizationStrings.png" alt="添加需要国际化的语言" loading="lazy"></figure>
 <h2 id="代码中对国际化内容的适配">代码中对国际化内容的适配</h2>
 <p>1.我在ViewController中初始化了一个Label，并用NSLocalized宏对这个Label的字符串进行国际化适配。</p>
 <pre><code class="language-objc">- (void)viewDidLoad {
@@ -166,9 +166,9 @@
 </code></pre>
 <p><strong>编译运行：</strong></p>
 <h3 id="系统语言为英文时显示效果">系统语言为英文时显示效果：</h3>
-<p><img src="http://7xii6e.com1.z0.glb.clouddn.com/Localize:english.png" alt="英文运行结果"></p>
+<figure data-type="image" tabindex="8"><img src="http://7xii6e.com1.z0.glb.clouddn.com/Localize:english.png" alt="英文运行结果" loading="lazy"></figure>
 <h3 id="系统语言为中文时显示效果">系统语言为中文时显示效果：</h3>
-<p><img src="http://7xii6e.com1.z0.glb.clouddn.com/Localize:chinese.png" alt="中文运行结果"></p>
+<figure data-type="image" tabindex="9"><img src="http://7xii6e.com1.z0.glb.clouddn.com/Localize:chinese.png" alt="中文运行结果" loading="lazy"></figure>
 <p>可见，文本会随着系统语言的改变而改变。至此，一个简单的可以跟随系统语言切换的Demo就完成了。</p>
 <h1 id="已开发多个版本的工程">已开发多个版本的工程</h1>
 <p>工程开发了许久，代码也写了几万行了，这时Boss突然说要进行国际化适配。</p>
@@ -197,7 +197,7 @@
 <p><code>@&quot;[^&quot;]*[\u4E00-\u9FA5]+[^&quot;\n]*?&quot;</code></p>
 <p>然后，重点来了。Command+Shift+F，进入全局搜索引擎，切换为Replace模式，并把匹配模式改为Regular Expression。</p>
 <p>在搜索条件里输入<code>(@&quot;[^&quot;]*[\u4E00-\u9FA5]+[^&quot;\n]*?&quot;)</code>，在下面替换内容里输入<code>NSLocalizedString($1, nil)</code>。此处正则表达式两边加括号的目的是为了能够在替换时用<code>$1</code>获取原有字符串的值，在替换时把原有值放入宏定义内key的位置。然后，搜索，可以看到搜索结果，点击<code>Replace All</code>，即可完成替换。</p>
-<p><img src="http://7xii6e.com1.z0.glb.clouddn.com/Localized%5Csearch.png" alt="正则搜索"></p>
+<figure data-type="image" tabindex="10"><img src="http://7xii6e.com1.z0.glb.clouddn.com/Localized%5Csearch.png" alt="正则搜索" loading="lazy"></figure>
 <h2 id="生成多语言文件">生成多语言文件</h2>
 <p>替换完了原有字符串，下面就是生成多语言文件了。作为一个文艺程序猿，我是不可能一处一处的把项目中的字符串挑出来再写到Localizable.strings文件里的。</p>
 <p>好在Xcode自带了一个命令行工具genstrings。我们可以利用这个工具生成所需的多语言文件。</p>
@@ -369,10 +369,10 @@ static NSString *const kUserLanguage = @&quot;kUserLanguage&quot;;
 <blockquote>
 <p>注：图片名必须和原有名字一致</p>
 </blockquote>
-<p><img src="http://7xii6e.com1.z0.glb.clouddn.com/Localized:localImage.png" alt="生成国际化图片"></p>
-<p><img src="http://7xii6e.com1.z0.glb.clouddn.com/Localized:localImageList.png" alt="国际化图片列表"></p>
-<p><img src="http://7xii6e.com1.z0.glb.clouddn.com/Localized:image:english.png" alt="英文图片"></p>
-<p><img src="http://7xii6e.com1.z0.glb.clouddn.com/Localized:image:chinese.png" alt="中文图片"></p>
+<figure data-type="image" tabindex="11"><img src="http://7xii6e.com1.z0.glb.clouddn.com/Localized:localImage.png" alt="生成国际化图片" loading="lazy"></figure>
+<figure data-type="image" tabindex="12"><img src="http://7xii6e.com1.z0.glb.clouddn.com/Localized:localImageList.png" alt="国际化图片列表" loading="lazy"></figure>
+<figure data-type="image" tabindex="13"><img src="http://7xii6e.com1.z0.glb.clouddn.com/Localized:image:english.png" alt="英文图片" loading="lazy"></figure>
+<figure data-type="image" tabindex="14"><img src="http://7xii6e.com1.z0.glb.clouddn.com/Localized:image:chinese.png" alt="中文图片" loading="lazy"></figure>
 <p>这样，在更改系统语言的时候，图片也会随之改变了。</p>
 <p>以上就是我总结的所有的有关iOS国际化的操作了，如果有疏漏的地方，请各位看官多多指正。共勉。</p>
 
@@ -383,7 +383,7 @@ static NSString *const kUserLanguage = @&quot;kUserLanguage&quot;;
         
           <div class="next-post">
             <div class="next">下一篇</div>
-            <a href="https://blog.xiaolei.kim/post/jCdw3cGbP">
+            <a href="https://blog.xiaolei.kim/post/jCdw3cGbP/">
               <h3 class="post-title">
                 Hexo 在部署时忽略 README 文件的渲染
               </h3>

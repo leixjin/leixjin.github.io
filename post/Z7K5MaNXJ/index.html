@@ -4,7 +4,7 @@
 <meta name="description" content="" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>iOS Hook 全局方法先导篇之 - Fishhook 原理解析 | leixjin</title>
-<link rel="shortcut icon" href="https://blog.xiaolei.kim/favicon.ico?v=1558864780614">
+<link rel="shortcut icon" href="https://blog.xiaolei.kim/favicon.ico?v=1582613369471">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
 <link rel="stylesheet" href="https://blog.xiaolei.kim/styles/main.css">
@@ -20,7 +20,7 @@
       <div class="main-content">
         <div class="site-header">
   <a href="https://blog.xiaolei.kim">
-  <img class="avatar" src="https://blog.xiaolei.kim/images/avatar.png?v=1558864780614" alt="">
+  <img class="avatar" src="https://blog.xiaolei.kim/images/avatar.png?v=1582613369471" alt="">
   </a>
   <h1 class="site-title">
     leixjin
@@ -81,7 +81,7 @@
                 · 2018-07-20 ·
               </time>
               
-                <a href="https://blog.xiaolei.kim/tag/aNq11Gn7A" class="post-tag">
+                <a href="https://blog.xiaolei.kim/tag/aNq11Gn7A/" class="post-tag">
                   # iOS
                 </a>
               
@@ -97,11 +97,11 @@
 <h2 id="mach-o-mach-object-file-format">Mach-O （Mach Object File Format）</h2>
 <blockquote>
 <p>Wikipedia</p>
-<p>Mach-O 是 Mach object 文件格式的缩写，它是一种用于记录可执行文件、对象代码、共享库、动态加载代码和内存转储的文件格式。作为 a.out 格式的替代品，Mach-O 提供了更好的扩展性，并提升了符号表中信息的访问速度。
+<p>Mach-O 是 Mach object 文件格式的缩写，它是一种用于记录可执行文件、对象代码、共享库、动态加载代码和内存转储的文件格式。作为 a.out 格式的替代品，Mach-O 提供了更好的扩展性，并提升了符号表中信息的访问速度。<br>
 大多数基于 Mach 内核的操作系统都使用 Mach-O。NeXTSTEP、OS X 和 iOS 是使用这种格式作为本地可执行文件、库和对象代码的例子。</p>
 </blockquote>
 <p><strong>Mach-O 可以是以下形式：</strong></p>
-<p><img src="http://7xii6e.com1.z0.glb.clouddn.com/Mach-O%20%E6%A0%BC%E5%BC%8F" alt="image"></p>
+<figure data-type="image" tabindex="1"><img src="http://7xii6e.com1.z0.glb.clouddn.com/Mach-O%20%E6%A0%BC%E5%BC%8F" alt="image" loading="lazy"></figure>
 <ul>
 <li>Executable 可执行的二进制文件</li>
 <li>Dynamic Library 动态库</li>
@@ -111,10 +111,10 @@
 </ul>
 <p><strong>Mach-O 的文件结构示意图：</strong></p>
 <p>我们可以看看 Mach-O 格式到底是什么样的格式，先引用一张国外热心网友发布的图片</p>
-<p><img src="http://7xii6e.com1.z0.glb.clouddn.com/%E7%83%AD%E5%BF%83%E7%BD%91%E5%8F%8B.png" alt="热心网友"></p>
+<figure data-type="image" tabindex="2"><img src="http://7xii6e.com1.z0.glb.clouddn.com/%E7%83%AD%E5%BF%83%E7%BD%91%E5%8F%8B.png" alt="热心网友" loading="lazy"></figure>
 <p>我们可以看出，并不是所有的数据都是相连的，而是被分成了若干个段落</p>
 <p>下面，我们再结合官方文档提供的一张示意图</p>
-<p><img src="http://7xii6e.com1.z0.glb.clouddn.com/Mach-O%20%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3.png" alt="官方文档"></p>
+<figure data-type="image" tabindex="3"><img src="http://7xii6e.com1.z0.glb.clouddn.com/Mach-O%20%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3.png" alt="官方文档" loading="lazy"></figure>
 <p><strong>可以看出 Mach-O 主要由3部分构成</strong></p>
 <ul>
 <li>Mach-O 头（Mach Header）：这里描述了 Mach-O 的 CPU 架构(比如x86,arm64)、文件类型以及加载命令等信息</li>
@@ -153,9 +153,9 @@ struct fat_arch_64 {
 };
 
 </code></pre>
-<p>其中，fat_header 结构体包含了一个 magic 魔数，胖二进制文件的魔数值是 0xcafebabe 或 0xcafebabf，没错，就是 cafebaby。nfat_arch 标识包含的不同架构的 Mach-O 文件的数量。
+<p>其中，fat_header 结构体包含了一个 magic 魔数，胖二进制文件的魔数值是 0xcafebabe 或 0xcafebabf，没错，就是 cafebaby。nfat_arch 标识包含的不同架构的 Mach-O 文件的数量。<br>
 fat_header 后会跟着 fat_arch，有多少个不同架构的 Mach-O 文件，就有多少个 fat_arch，用于说明对应 Mach-O 文件大小、支持的 CPU 架构、偏移地址等；</p>
-<p><img src="http://7xii6e.com1.z0.glb.clouddn.com/%E8%83%96%E6%96%87%E4%BB%B6.jpg" alt="image"></p>
+<figure data-type="image" tabindex="4"><img src="http://7xii6e.com1.z0.glb.clouddn.com/%E8%83%96%E6%96%87%E4%BB%B6.jpg" alt="image" loading="lazy"></figure>
 <h3 id="准备工作">准备工作</h3>
 <p>下面，我们就用一段简单的代码，来探究一下 Mach-O 的内部文件结构</p>
 <p>首先，我们新建一个 helloworld.c 文件</p>
@@ -174,7 +174,7 @@ int main(int argc, char *argv[])
 </code></pre>
 <p>以上命令会将 helloworld.c 编译成一个名字为 a.out 的 Mach-O 可执行文件，因为我们没有指定名字，编译器会默认的将其指定为 a.out。</p>
 <p>得到了 Mach-O 文件之后，我们用 MachOView 来看一下 a.out 的文件布局。</p>
-<p><img src="http://7xii6e.com1.z0.glb.clouddn.com/MachOView.png" alt="image"></p>
+<figure data-type="image" tabindex="5"><img src="http://7xii6e.com1.z0.glb.clouddn.com/MachOView.png" alt="image" loading="lazy"></figure>
 <h3 id="mach-o-header">Mach-O Header</h3>
 <p>Mach-O Header 的作用，主要是用来说明整个 Mach-O 文件的基本信息，帮助系统迅速的定位Mach-O 文件的运行环境，文件类型。</p>
 <p>与 Mach-O 文件格式有关的结构体定义都可以从 /usr/include/mach-o/loader.h 中找到，也就是 &lt;mach-o/loader.h&gt; 头。以下是 64 位定义的代码，32 位的区别是缺少了一个预留字段：</p>
@@ -193,7 +193,7 @@ struct mach_header_64 {
     uint32_t    reserved;    /* 64 位的保留字段 */
 };
 </code></pre>
-<p><img src="http://7xii6e.com1.z0.glb.clouddn.com/macho%20header.png" alt="image"></p>
+<figure data-type="image" tabindex="6"><img src="http://7xii6e.com1.z0.glb.clouddn.com/macho%20header.png" alt="image" loading="lazy"></figure>
 <p>由于 Mach-O 支持多种类型文件，所以此处引入了 filetype 字段来标明，这些文件类型定义在 loader.h 文件中同样可以找到。</p>
 <pre><code class="language-c">#define    MH_OBJECT    0x1        /* Target 文件：编译过程中产生的 obj文件 (gcc -c xxx.c 生成的 xxx.o 文件) */
 #define    MH_EXECUTE    0x2        /* 可执行二进制文件 */
@@ -218,7 +218,7 @@ struct mach_header_64 {
 #define MH_PIE 0x200000  /* 对可执行的文件类型启用地址空间 layout 随机化 */
 #define MH_NO_HEAP_EXECUTION 0x1000000 /* 将 Heap 标记为不可执行，可防止 heap spray 攻击 */
 </code></pre>
-<p><img src="http://7xii6e.com1.z0.glb.clouddn.com/machoheaderdetail.png" alt="3398025317-582b20e1a9d1b_articlex"></p>
+<figure data-type="image" tabindex="7"><img src="http://7xii6e.com1.z0.glb.clouddn.com/machoheaderdetail.png" alt="3398025317-582b20e1a9d1b_articlex" loading="lazy"></figure>
 <p>其中：</p>
 <p>flags： MH_PIE - 随机地址空间（ASLR）</p>
 <p>进程每一次启动，地址空间都会随机化。如果采用传统的方式，程序每启动一次，启动的虚拟内存镜像一致的话，黑客很容易就重写内存来破解程序。所以，ASLR 可以有效避免黑客的攻击。</p>
@@ -323,7 +323,7 @@ struct mach_header_64 {
 <li>__DATA.__objc_superrefs	Objective-C 超类引用</li>
 </ul>
 <p>接下来我们再用 MachOView 来看看刚刚 a.out 中 Load Command 的细节，LC_SEGMENT_64 和 LC_SEGMENT 是加载的主要命令，它负责指导内核来设置进程的内存空间。</p>
-<p><img src="http://7xii6e.com1.z0.glb.clouddn.com/pagezero.png" alt="image"></p>
+<figure data-type="image" tabindex="8"><img src="http://7xii6e.com1.z0.glb.clouddn.com/pagezero.png" alt="image" loading="lazy"></figure>
 <p>第一个 segment 是 __PAGEZERO。它的大小为 4GB。这 4GB 并不是文件的真实大小，但是规定了进程地址空间的前 4GB 被映射为不可执行、不可写和不可读。这就是为什么当读写一个 NULL 指针或更小的值时会得到一个 EXC_BAD_ACCESS 错误。这是操作系统在尝试防止引起系统崩溃。</p>
 <p>当运行一个可执行文件时，虚拟内存 (VM - virtual memory) 系统将 segment 映射到进程的地址空间上。映射完全不同于我们一般的认识，如果你对虚拟内存系统不熟悉，可以简单的想象虚拟内存系统将整个可执行文件加载进内存 -- 虽然在实际上不是这样的。VM 使用了一些技巧来避免全部加载。</p>
 <p>当虚拟内存系统进行映射时，segment 和 section 会以不同的参数和权限被映射。</p>
@@ -375,7 +375,7 @@ struct nlist_64 {
 <p>是放置 Section 名、变量名、符号名的字符串表，字符串末尾自带的 \0 为分隔符（机器码00）。知道 strtab 的基地址（base），然后加上在 Symbol Table 中找到的该字符串的偏移量（offset）就可以找到这个字符串。</p>
 <h2 id="fishhook-的原理">Fishhook 的原理</h2>
 <p>下面这张图，是 fishhook 在 GitHub 上提供的一张原理示意图</p>
-<p><img src="http://7xii6e.com1.z0.glb.clouddn.com/fishhook.png" alt="image"></p>
+<figure data-type="image" tabindex="9"><img src="http://7xii6e.com1.z0.glb.clouddn.com/fishhook.png" alt="image" loading="lazy"></figure>
 <p>基本思路为：</p>
 <ol>
 <li>先找到 Mach-O 文件的 Load_Commands 中的 LC_SEGMENT_64(_DATA)，然后找到这条加载指令下的 Section64 Header(_nl_symbol_ptr)，以及 Section64 Header(_la_symbol_ptr)；</li>
@@ -403,7 +403,7 @@ struct nlist_64 {
         
           <div class="next-post">
             <div class="next">下一篇</div>
-            <a href="https://blog.xiaolei.kim/post/PXIlyVOKm">
+            <a href="https://blog.xiaolei.kim/post/PXIlyVOKm/">
               <h3 class="post-title">
                 Docker 搭建 FTP 服务器
               </h3>

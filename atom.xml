@@ -2,18 +2,18 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://blog.xiaolei.kim</id>
     <title>leixjin</title>
-    <updated>2019-05-26T10:02:46.014Z</updated>
+    <updated>2020-02-25T06:50:16.656Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://blog.xiaolei.kim"/>
     <link rel="self" href="https://blog.xiaolei.kim/atom.xml"/>
     <subtitle>Think different.</subtitle>
     <logo>https://blog.xiaolei.kim/images/avatar.png</logo>
     <icon>https://blog.xiaolei.kim/favicon.ico</icon>
-    <rights>All rights reserved 2019, leixjin</rights>
+    <rights>All rights reserved 2020, leixjin</rights>
     <entry>
         <title type="html"><![CDATA[清除 Mac DNS 缓存]]></title>
-        <id>https://blog.xiaolei.kim/post/pmyP_Znk7</id>
-        <link href="https://blog.xiaolei.kim/post/pmyP_Znk7">
+        <id>https://blog.xiaolei.kim/post/pmyP_Znk7/</id>
+        <link href="https://blog.xiaolei.kim/post/pmyP_Znk7/">
         </link>
         <updated>2019-01-13T06:39:55.000Z</updated>
         <content type="html"><![CDATA[<pre><code class="language-shell">sudo killall -HUP mDNSResponder
@@ -24,8 +24,8 @@ sudo dscacheutil -flushcache
     </entry>
     <entry>
         <title type="html"><![CDATA[为基于 Docker 搭建的 Ghost 配置邮件服务]]></title>
-        <id>https://blog.xiaolei.kim/post/WOmXokNwB</id>
-        <link href="https://blog.xiaolei.kim/post/WOmXokNwB">
+        <id>https://blog.xiaolei.kim/post/WOmXokNwB/</id>
+        <link href="https://blog.xiaolei.kim/post/WOmXokNwB/">
         </link>
         <updated>2018-07-25T06:39:27.000Z</updated>
         <content type="html"><![CDATA[<p>最近想配置一个 Ghost 的多账户，在点完邀请链接之后没有任何效果。遂猜想是不是因为需要配置发件服务器的原因，查了一下果然是需要单独配置才能发送邀请邮件。于是便开始折腾。</p>
@@ -59,13 +59,13 @@ sudo dscacheutil -flushcache
 <pre><code class="language-shell">cp ghost-0210ed:config.json /var/lib/ghost/config.production.json
 </code></pre>
 <p>替换完配置文件，重新启动 Ghost，即可成功发送邀请邮件。</p>
-<p><img src="/images/ghost-team.png" alt="ghost-team"></p>
+<figure data-type="image" tabindex="1"><img src="/images/ghost-team.png" alt="ghost-team" loading="lazy"></figure>
 ]]></content>
     </entry>
     <entry>
         <title type="html"><![CDATA[iOS Hook 全局方法先导篇之 - Fishhook 原理解析]]></title>
-        <id>https://blog.xiaolei.kim/post/Z7K5MaNXJ</id>
-        <link href="https://blog.xiaolei.kim/post/Z7K5MaNXJ">
+        <id>https://blog.xiaolei.kim/post/Z7K5MaNXJ/</id>
+        <link href="https://blog.xiaolei.kim/post/Z7K5MaNXJ/">
         </link>
         <updated>2018-07-20T06:38:58.000Z</updated>
         <content type="html"><![CDATA[<h2 id="什么是-fishhook">什么是 Fishhook</h2>
@@ -74,11 +74,11 @@ sudo dscacheutil -flushcache
 <h2 id="mach-o-mach-object-file-format">Mach-O （Mach Object File Format）</h2>
 <blockquote>
 <p>Wikipedia</p>
-<p>Mach-O 是 Mach object 文件格式的缩写，它是一种用于记录可执行文件、对象代码、共享库、动态加载代码和内存转储的文件格式。作为 a.out 格式的替代品，Mach-O 提供了更好的扩展性，并提升了符号表中信息的访问速度。
+<p>Mach-O 是 Mach object 文件格式的缩写，它是一种用于记录可执行文件、对象代码、共享库、动态加载代码和内存转储的文件格式。作为 a.out 格式的替代品，Mach-O 提供了更好的扩展性，并提升了符号表中信息的访问速度。<br>
 大多数基于 Mach 内核的操作系统都使用 Mach-O。NeXTSTEP、OS X 和 iOS 是使用这种格式作为本地可执行文件、库和对象代码的例子。</p>
 </blockquote>
 <p><strong>Mach-O 可以是以下形式：</strong></p>
-<p><img src="http://7xii6e.com1.z0.glb.clouddn.com/Mach-O%20%E6%A0%BC%E5%BC%8F" alt="image"></p>
+<figure data-type="image" tabindex="1"><img src="http://7xii6e.com1.z0.glb.clouddn.com/Mach-O%20%E6%A0%BC%E5%BC%8F" alt="image" loading="lazy"></figure>
 <ul>
 <li>Executable 可执行的二进制文件</li>
 <li>Dynamic Library 动态库</li>
@@ -88,10 +88,10 @@ sudo dscacheutil -flushcache
 </ul>
 <p><strong>Mach-O 的文件结构示意图：</strong></p>
 <p>我们可以看看 Mach-O 格式到底是什么样的格式，先引用一张国外热心网友发布的图片</p>
-<p><img src="http://7xii6e.com1.z0.glb.clouddn.com/%E7%83%AD%E5%BF%83%E7%BD%91%E5%8F%8B.png" alt="热心网友"></p>
+<figure data-type="image" tabindex="2"><img src="http://7xii6e.com1.z0.glb.clouddn.com/%E7%83%AD%E5%BF%83%E7%BD%91%E5%8F%8B.png" alt="热心网友" loading="lazy"></figure>
 <p>我们可以看出，并不是所有的数据都是相连的，而是被分成了若干个段落</p>
 <p>下面，我们再结合官方文档提供的一张示意图</p>
-<p><img src="http://7xii6e.com1.z0.glb.clouddn.com/Mach-O%20%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3.png" alt="官方文档"></p>
+<figure data-type="image" tabindex="3"><img src="http://7xii6e.com1.z0.glb.clouddn.com/Mach-O%20%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3.png" alt="官方文档" loading="lazy"></figure>
 <p><strong>可以看出 Mach-O 主要由3部分构成</strong></p>
 <ul>
 <li>Mach-O 头（Mach Header）：这里描述了 Mach-O 的 CPU 架构(比如x86,arm64)、文件类型以及加载命令等信息</li>
@@ -130,9 +130,9 @@ struct fat_arch_64 {
 };
 
 </code></pre>
-<p>其中，fat_header 结构体包含了一个 magic 魔数，胖二进制文件的魔数值是 0xcafebabe 或 0xcafebabf，没错，就是 cafebaby。nfat_arch 标识包含的不同架构的 Mach-O 文件的数量。
+<p>其中，fat_header 结构体包含了一个 magic 魔数，胖二进制文件的魔数值是 0xcafebabe 或 0xcafebabf，没错，就是 cafebaby。nfat_arch 标识包含的不同架构的 Mach-O 文件的数量。<br>
 fat_header 后会跟着 fat_arch，有多少个不同架构的 Mach-O 文件，就有多少个 fat_arch，用于说明对应 Mach-O 文件大小、支持的 CPU 架构、偏移地址等；</p>
-<p><img src="http://7xii6e.com1.z0.glb.clouddn.com/%E8%83%96%E6%96%87%E4%BB%B6.jpg" alt="image"></p>
+<figure data-type="image" tabindex="4"><img src="http://7xii6e.com1.z0.glb.clouddn.com/%E8%83%96%E6%96%87%E4%BB%B6.jpg" alt="image" loading="lazy"></figure>
 <h3 id="准备工作">准备工作</h3>
 <p>下面，我们就用一段简单的代码，来探究一下 Mach-O 的内部文件结构</p>
 <p>首先，我们新建一个 helloworld.c 文件</p>
@@ -151,7 +151,7 @@ int main(int argc, char *argv[])
 </code></pre>
 <p>以上命令会将 helloworld.c 编译成一个名字为 a.out 的 Mach-O 可执行文件，因为我们没有指定名字，编译器会默认的将其指定为 a.out。</p>
 <p>得到了 Mach-O 文件之后，我们用 MachOView 来看一下 a.out 的文件布局。</p>
-<p><img src="http://7xii6e.com1.z0.glb.clouddn.com/MachOView.png" alt="image"></p>
+<figure data-type="image" tabindex="5"><img src="http://7xii6e.com1.z0.glb.clouddn.com/MachOView.png" alt="image" loading="lazy"></figure>
 <h3 id="mach-o-header">Mach-O Header</h3>
 <p>Mach-O Header 的作用，主要是用来说明整个 Mach-O 文件的基本信息，帮助系统迅速的定位Mach-O 文件的运行环境，文件类型。</p>
 <p>与 Mach-O 文件格式有关的结构体定义都可以从 /usr/include/mach-o/loader.h 中找到，也就是 &lt;mach-o/loader.h&gt; 头。以下是 64 位定义的代码，32 位的区别是缺少了一个预留字段：</p>
@@ -170,7 +170,7 @@ struct mach_header_64 {
     uint32_t    reserved;    /* 64 位的保留字段 */
 };
 </code></pre>
-<p><img src="http://7xii6e.com1.z0.glb.clouddn.com/macho%20header.png" alt="image"></p>
+<figure data-type="image" tabindex="6"><img src="http://7xii6e.com1.z0.glb.clouddn.com/macho%20header.png" alt="image" loading="lazy"></figure>
 <p>由于 Mach-O 支持多种类型文件，所以此处引入了 filetype 字段来标明，这些文件类型定义在 loader.h 文件中同样可以找到。</p>
 <pre><code class="language-c">#define    MH_OBJECT    0x1        /* Target 文件：编译过程中产生的 obj文件 (gcc -c xxx.c 生成的 xxx.o 文件) */
 #define    MH_EXECUTE    0x2        /* 可执行二进制文件 */
@@ -195,7 +195,7 @@ struct mach_header_64 {
 #define MH_PIE 0x200000  /* 对可执行的文件类型启用地址空间 layout 随机化 */
 #define MH_NO_HEAP_EXECUTION 0x1000000 /* 将 Heap 标记为不可执行，可防止 heap spray 攻击 */
 </code></pre>
-<p><img src="http://7xii6e.com1.z0.glb.clouddn.com/machoheaderdetail.png" alt="3398025317-582b20e1a9d1b_articlex"></p>
+<figure data-type="image" tabindex="7"><img src="http://7xii6e.com1.z0.glb.clouddn.com/machoheaderdetail.png" alt="3398025317-582b20e1a9d1b_articlex" loading="lazy"></figure>
 <p>其中：</p>
 <p>flags： MH_PIE - 随机地址空间（ASLR）</p>
 <p>进程每一次启动，地址空间都会随机化。如果采用传统的方式，程序每启动一次，启动的虚拟内存镜像一致的话，黑客很容易就重写内存来破解程序。所以，ASLR 可以有效避免黑客的攻击。</p>
@@ -300,7 +300,7 @@ struct mach_header_64 {
 <li>__DATA.__objc_superrefs	Objective-C 超类引用</li>
 </ul>
 <p>接下来我们再用 MachOView 来看看刚刚 a.out 中 Load Command 的细节，LC_SEGMENT_64 和 LC_SEGMENT 是加载的主要命令，它负责指导内核来设置进程的内存空间。</p>
-<p><img src="http://7xii6e.com1.z0.glb.clouddn.com/pagezero.png" alt="image"></p>
+<figure data-type="image" tabindex="8"><img src="http://7xii6e.com1.z0.glb.clouddn.com/pagezero.png" alt="image" loading="lazy"></figure>
 <p>第一个 segment 是 __PAGEZERO。它的大小为 4GB。这 4GB 并不是文件的真实大小，但是规定了进程地址空间的前 4GB 被映射为不可执行、不可写和不可读。这就是为什么当读写一个 NULL 指针或更小的值时会得到一个 EXC_BAD_ACCESS 错误。这是操作系统在尝试防止引起系统崩溃。</p>
 <p>当运行一个可执行文件时，虚拟内存 (VM - virtual memory) 系统将 segment 映射到进程的地址空间上。映射完全不同于我们一般的认识，如果你对虚拟内存系统不熟悉，可以简单的想象虚拟内存系统将整个可执行文件加载进内存 -- 虽然在实际上不是这样的。VM 使用了一些技巧来避免全部加载。</p>
 <p>当虚拟内存系统进行映射时，segment 和 section 会以不同的参数和权限被映射。</p>
@@ -352,7 +352,7 @@ struct nlist_64 {
 <p>是放置 Section 名、变量名、符号名的字符串表，字符串末尾自带的 \0 为分隔符（机器码00）。知道 strtab 的基地址（base），然后加上在 Symbol Table 中找到的该字符串的偏移量（offset）就可以找到这个字符串。</p>
 <h2 id="fishhook-的原理">Fishhook 的原理</h2>
 <p>下面这张图，是 fishhook 在 GitHub 上提供的一张原理示意图</p>
-<p><img src="http://7xii6e.com1.z0.glb.clouddn.com/fishhook.png" alt="image"></p>
+<figure data-type="image" tabindex="9"><img src="http://7xii6e.com1.z0.glb.clouddn.com/fishhook.png" alt="image" loading="lazy"></figure>
 <p>基本思路为：</p>
 <ol>
 <li>先找到 Mach-O 文件的 Load_Commands 中的 LC_SEGMENT_64(_DATA)，然后找到这条加载指令下的 Section64 Header(_nl_symbol_ptr)，以及 Section64 Header(_la_symbol_ptr)；</li>
@@ -376,11 +376,11 @@ struct nlist_64 {
     </entry>
     <entry>
         <title type="html"><![CDATA[Docker 搭建 FTP 服务器]]></title>
-        <id>https://blog.xiaolei.kim/post/PXIlyVOKm</id>
-        <link href="https://blog.xiaolei.kim/post/PXIlyVOKm">
+        <id>https://blog.xiaolei.kim/post/PXIlyVOKm/</id>
+        <link href="https://blog.xiaolei.kim/post/PXIlyVOKm/">
         </link>
         <updated>2018-04-26T06:37:57.000Z</updated>
-        <content type="html"><![CDATA[<p><img src="https://images.unsplash.com/photo-1524507390346-633e7cabc14b?ixlib=rb-0.3.5&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=1080&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjExNzczfQ&amp;s=1f55f3e32fce4af14eed0cc1799d5b96" alt="">
+        <content type="html"><![CDATA[<p><img src="https://images.unsplash.com/photo-1524507390346-633e7cabc14b?ixlib=rb-0.3.5&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=1080&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjExNzczfQ&amp;s=1f55f3e32fce4af14eed0cc1799d5b96" alt="" loading="lazy"><br>
 <small>Photo by <a href="https://unsplash.com/@pramstutz?utm_source=ghost&amp;utm_medium=referral&amp;utm_campaign=api-credit">Parker Amstutz</a> / <a href="https://unsplash.com/?utm_source=ghost&amp;utm_medium=referral&amp;utm_campaign=api-credit">Unsplash</a></small></p>
 <hr>
 <p>这两天要准备项目重写，打算搞一套自动化编译流程，需要把产物放在一个地方，自然而然就想到了 FTP，而且最近也在玩 Docker，所以就准备先在自己服务器上试一下。</p>
@@ -400,8 +400,8 @@ struct nlist_64 {
     </entry>
     <entry>
         <title type="html"><![CDATA[NSLinkAttributeName 属性对应的文字颜色设置]]></title>
-        <id>https://blog.xiaolei.kim/post/wsk2IIkTb</id>
-        <link href="https://blog.xiaolei.kim/post/wsk2IIkTb">
+        <id>https://blog.xiaolei.kim/post/wsk2IIkTb/</id>
+        <link href="https://blog.xiaolei.kim/post/wsk2IIkTb/">
         </link>
         <updated>2018-04-18T06:37:03.000Z</updated>
         <content type="html"><![CDATA[<p>今天写了一个 UITextView，里面赋值了一个 NSAttributedString，其中设置了一个 NSLinkAttributeName 的属性，也就是给一段文字设置了一个超链接。设置完之后，发现这个链接的颜色又变成了系统的丑蓝色。mmp...UIKit 怎么这么热衷于丑蓝呢？然后我就随手设置了一个 NSForegroundColorAttributeName，编译之后，卧槽？不生效？然后又尝试了各种给 NSAttributedString 设置颜色的属性，皆未果。顿时我就方了，这还有坑？</p>
@@ -413,11 +413,11 @@ struct nlist_64 {
     </entry>
     <entry>
         <title type="html"><![CDATA[iOS UIBarButtonItem 的图片颜色问题]]></title>
-        <id>https://blog.xiaolei.kim/post/UzPGc9oag</id>
-        <link href="https://blog.xiaolei.kim/post/UzPGc9oag">
+        <id>https://blog.xiaolei.kim/post/UzPGc9oag/</id>
+        <link href="https://blog.xiaolei.kim/post/UzPGc9oag/">
         </link>
         <updated>2018-04-17T06:36:41.000Z</updated>
-        <content type="html"><![CDATA[<p><img src="https://images.unsplash.com/photo-1523823404920-c5aa35025e89?ixlib=rb-0.3.5&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=1080&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjExNzczfQ&amp;s=a28ab2398ce1263c5f9afffe3ab46a47" alt="">
+        <content type="html"><![CDATA[<p><img src="https://images.unsplash.com/photo-1523823404920-c5aa35025e89?ixlib=rb-0.3.5&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=1080&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjExNzczfQ&amp;s=a28ab2398ce1263c5f9afffe3ab46a47" alt="" loading="lazy"><br>
 <small>Photo by <a href="https://unsplash.com/@mrbw?utm_source=ghost&amp;utm_medium=referral&amp;utm_campaign=api-credit">Brandon Wong</a> / <a href="https://unsplash.com/?utm_source=ghost&amp;utm_medium=referral&amp;utm_campaign=api-credit">Unsplash</a></small></p>
 <hr>
 <p>这两天在搞 iOS 项目，写写 UI，画画界面。今天遇到了一个之前没遇到过的问题，就是设置全局导航栏的返回按钮。这个好说，刷刷刷的搞定了。</p>
@@ -457,35 +457,35 @@ struct nlist_64 {
     </entry>
     <entry>
         <title type="html"><![CDATA[清除 Chrome 的 DNS Cache]]></title>
-        <id>https://blog.xiaolei.kim/post/E2PlwEanR</id>
-        <link href="https://blog.xiaolei.kim/post/E2PlwEanR">
+        <id>https://blog.xiaolei.kim/post/E2PlwEanR/</id>
+        <link href="https://blog.xiaolei.kim/post/E2PlwEanR/">
         </link>
         <updated>2018-04-17T06:36:17.000Z</updated>
         <content type="html"><![CDATA[<p>在 Chrome 地址栏输入： <a href="chrome://net-internals">chrome://net-internals</a></p>
-<p><img src="/content/images/2018/04/-----2018-04-17---10.50.48.png" alt="-----2018-04-17---10.50.48"></p>
+<figure data-type="image" tabindex="1"><img src="/content/images/2018/04/-----2018-04-17---10.50.48.png" alt="-----2018-04-17---10.50.48" loading="lazy"></figure>
 <p>右上角点击 Clear cache，你会发现，它生效了！</p>
 ]]></content>
     </entry>
     <entry>
         <title type="html"><![CDATA[狗血的中国移动]]></title>
-        <id>https://blog.xiaolei.kim/post/q9N6d08yg</id>
-        <link href="https://blog.xiaolei.kim/post/q9N6d08yg">
+        <id>https://blog.xiaolei.kim/post/q9N6d08yg/</id>
+        <link href="https://blog.xiaolei.kim/post/q9N6d08yg/">
         </link>
         <updated>2018-04-16T06:35:50.000Z</updated>
         <content type="html"><![CDATA[<h2 id="浪费我时间-消耗我钱财封我-vultr-的-443-端口">浪费我时间！ 消耗我钱财！！封我 Vultr 的 443 端口！！！</h2>
 <hr>
-<p>本来想给我的 Blog 加一把锁，搞到了最后，竟然因为移动把 Vultr 的 443 端口给封了。
+<p>本来想给我的 Blog 加一把锁，搞到了最后，竟然因为移动把 Vultr 的 443 端口给封了。<br>
 看看人家隔壁中国电信，跟人家好好学习学习。</p>
-<p>谁曾想，作为中国网民，竟然要浪费大把的时间在墙上面。
-在中国做技术首要技能竟然是上网。
-强烈吐槽啊。
+<p>谁曾想，作为中国网民，竟然要浪费大把的时间在墙上面。<br>
+在中国做技术首要技能竟然是上网。<br>
+强烈吐槽啊。<br>
 对我造成了严重的不适。</p>
 ]]></content>
     </entry>
     <entry>
         <title type="html"><![CDATA[博客搬新家啦]]></title>
-        <id>https://blog.xiaolei.kim/post/twREhBZ4L</id>
-        <link href="https://blog.xiaolei.kim/post/twREhBZ4L">
+        <id>https://blog.xiaolei.kim/post/twREhBZ4L/</id>
+        <link href="https://blog.xiaolei.kim/post/twREhBZ4L/">
         </link>
         <updated>2018-04-05T06:35:19.000Z</updated>
         <content type="html"><![CDATA[<p>最近发现 Docker 非常的方便，又凑巧换了个域名，就折腾了一下，把我的博客从 Blogger 迁移到了 WordPress，用了几天之后发现不是特别的满意，昨天晚上从床上爬起来，研究了一下 Ghost。发现它比 WordPress 更符合我的预期，折腾了几个小时，总算是把博客给折腾好了。</p>
@@ -500,8 +500,8 @@ struct nlist_64 {
     </entry>
     <entry>
         <title type="html"><![CDATA[Xcode 9 正式版模拟器卡顿]]></title>
-        <id>https://blog.xiaolei.kim/post/XynFtnT68</id>
-        <link href="https://blog.xiaolei.kim/post/XynFtnT68">
+        <id>https://blog.xiaolei.kim/post/XynFtnT68/</id>
+        <link href="https://blog.xiaolei.kim/post/XynFtnT68/">
         </link>
         <updated>2017-10-16T06:34:48.000Z</updated>
         <content type="html"><![CDATA[<p>升级到 Xcode 9 之后，用模拟器打开地图应用，发现图区的渲染简直卡到爆了，刚开始一度怀疑是不是自己的电脑出了什么问题，就用真机跑了跑，发现真机并没有什么问题。就在 Google 上搜了一下，发现这个问题是 Xcode 9 的 bug，导致此 bug 的原因是 模拟器中的 OpenGL 库里的一个依赖占用 CPU 过高。然后我废了九牛二虎之力找到了旧版本 Beta 版模拟器中相应的库进行了替换，问题得到解决。</p>
@@ -511,7 +511,7 @@ struct nlist_64 {
 </code></pre>
 <p>导致此问题的原因，苹果爸爸已经承认，确实是 Xcode 本身的 bug。</p>
 <p>这两年苹果爸爸真是越来越不走心了啊~</p>
-<p><img src="http://7xii6e.com1.z0.glb.clouddn.com/apple-xcode.png" alt="截图"></p>
+<figure data-type="image" tabindex="1"><img src="http://7xii6e.com1.z0.glb.clouddn.com/apple-xcode.png" alt="截图" loading="lazy"></figure>
 ]]></content>
     </entry>
 </feed>

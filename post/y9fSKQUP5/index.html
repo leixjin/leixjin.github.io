@@ -4,7 +4,7 @@
 <meta name="description" content="" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Core NFC 初体验 | leixjin</title>
-<link rel="shortcut icon" href="https://blog.xiaolei.kim/favicon.ico?v=1558864780614">
+<link rel="shortcut icon" href="https://blog.xiaolei.kim/favicon.ico?v=1582613369471">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
 <link rel="stylesheet" href="https://blog.xiaolei.kim/styles/main.css">
@@ -20,7 +20,7 @@
       <div class="main-content">
         <div class="site-header">
   <a href="https://blog.xiaolei.kim">
-  <img class="avatar" src="https://blog.xiaolei.kim/images/avatar.png?v=1558864780614" alt="">
+  <img class="avatar" src="https://blog.xiaolei.kim/images/avatar.png?v=1582613369471" alt="">
   </a>
   <h1 class="site-title">
     leixjin
@@ -81,7 +81,7 @@
                 · 2017-06-17 ·
               </time>
               
-                <a href="https://blog.xiaolei.kim/tag/aNq11Gn7A" class="post-tag">
+                <a href="https://blog.xiaolei.kim/tag/aNq11Gn7A/" class="post-tag">
                   # iOS
                 </a>
               
@@ -100,14 +100,14 @@
 <blockquote>
 <p>然鹅，只有那些拥有 iOS 11 系统的 iPhone 7/7P 的同学，才能拥有这些尊贵的特权。</p>
 </blockquote>
-<p><img src="http://upload-images.jianshu.io/upload_images/1688625-0962d5881300e923.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000" alt="NFC"></p>
+<figure data-type="image" tabindex="1"><img src="http://upload-images.jianshu.io/upload_images/1688625-0962d5881300e923.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000" alt="NFC" loading="lazy"></figure>
 <p>这次放出的 Core NFC 可以说是非常的轻量了，使用起来简直不能再简单一点。上图是 WWDC 上苹果提供的技术细分图，可以说基本涵盖了所有的格式。可以实现检测 NFC 标签 (NFC tags) 并读取包含 NDEF(NFC Data Exchange Format) 的数据。</p>
 <h1 id="实现步骤">实现步骤</h1>
 <h2 id="配置">配置</h2>
 <ul>
 <li>在开发者后台给你的 App ID 添加 NFC 读取权限。</li>
 </ul>
-<p><img src="https://i.stack.imgur.com/ENL6P.png" alt="step 1"></p>
+<figure data-type="image" tabindex="2"><img src="https://i.stack.imgur.com/ENL6P.png" alt="step 1" loading="lazy"></figure>
 <ul>
 <li>在 Info.plist 里添加如下信息，用来提示用户获取设备的 NFC 读取权限。</li>
 </ul>
@@ -205,7 +205,7 @@ func readerSession(_ session: NFCNDEFReaderSession, didInvalidateWithError error
 </blockquote>
 <p>以上，就是最简单的代码实现。</p>
 <p>如果不出意外的话，编译并运行刚刚的代码，在 App 启动的时候，会出现如下场景...</p>
-<p><img src="http://upload-images.jianshu.io/upload_images/1196804-937b3d5dcb2237bd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="launch"></p>
+<figure data-type="image" tabindex="3"><img src="http://upload-images.jianshu.io/upload_images/1196804-937b3d5dcb2237bd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="launch" loading="lazy"></figure>
 <p>恭喜！你的第一个 NFC Demo 已经完成，快用你的卡片试一下吧！</p>
 
             </div>
@@ -215,7 +215,7 @@ func readerSession(_ session: NFCNDEFReaderSession, didInvalidateWithError error
         
           <div class="next-post">
             <div class="next">下一篇</div>
-            <a href="https://blog.xiaolei.kim/post/q9f3GokcV">
+            <a href="https://blog.xiaolei.kim/post/q9f3GokcV/">
               <h3 class="post-title">
                 多说，不说
               </h3>

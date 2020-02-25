@@ -4,7 +4,7 @@
 <meta name="description" content="" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>iOS 中 Push 功能的实现 | leixjin</title>
-<link rel="shortcut icon" href="https://blog.xiaolei.kim/favicon.ico?v=1558864780614">
+<link rel="shortcut icon" href="https://blog.xiaolei.kim/favicon.ico?v=1582613369471">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
 <link rel="stylesheet" href="https://blog.xiaolei.kim/styles/main.css">
@@ -20,7 +20,7 @@
       <div class="main-content">
         <div class="site-header">
   <a href="https://blog.xiaolei.kim">
-  <img class="avatar" src="https://blog.xiaolei.kim/images/avatar.png?v=1558864780614" alt="">
+  <img class="avatar" src="https://blog.xiaolei.kim/images/avatar.png?v=1582613369471" alt="">
   </a>
   <h1 class="site-title">
     leixjin
@@ -89,7 +89,7 @@
             <div class="post-content">
               <h2 id="push的基本原理">Push的基本原理</h2>
 <p>可以用苹果官方文档中的一张图片简单的概括：</p>
-<p><img src="http://7xii6e.com1.z0.glb.clouddn.com/iOS_Push.png" alt="Push的流程"></p>
+<figure data-type="image" tabindex="1"><img src="http://7xii6e.com1.z0.glb.clouddn.com/iOS_Push.png" alt="Push的流程" loading="lazy"></figure>
 <p><strong>它是基于这样一种工作流程：</strong></p>
 <ul>
 <li>我们的iOS设备，只要处于联网状态，就会和苹果的服务器保持长连接，以便苹果的各种消息服务能够正常工作(比如说<strong>iMassage</strong>、<strong>FaceTime</strong>、以及我们要用到的<strong>APNs</strong>服务等) 。</li>
@@ -127,14 +127,14 @@
 </code></pre>
 <p>这个步骤需要输入3次左右的密码，建议密码和<strong>aps_development_key.p12</strong>的密码一致，以防混淆。</p>
 <p>这里生成的<strong>aps_development_service.p12</strong>就是服务器向APNs服务器发送<strong>Push</strong>消息需要的证书。把证书和密码给服务器端，他们就可以连接<strong>APNs</strong>并发送消息了。</p>
-<p>苹果<strong>APNs</strong>服务器有两个地址，分别为测试的沙盒地址：
+<p>苹果<strong>APNs</strong>服务器有两个地址，分别为测试的沙盒地址：<br>
 <code>gateway.sandbox.push.apple.com:2195</code><br>
 以及正式地址：<br>
 <code>gateway.push.apple.com:2195</code></p>
 <h2 id="客户端获取devicetoken">客户端获取DeviceToken</h2>
 <ol>
-<li>注册Push服务
-服务器想要给指定设备发送消息，需要知道这个设备的<strong>DeviceToken</strong>，然后上传到服务器。下面就来说明如何获得<strong>DeviceToken</strong>。
+<li>注册Push服务<br>
+服务器想要给指定设备发送消息，需要知道这个设备的<strong>DeviceToken</strong>，然后上传到服务器。下面就来说明如何获得<strong>DeviceToken</strong>。<br>
 想要能够接收到苹果返回的<strong>DeviceToken</strong>，需要先注册<strong>Push</strong>功能：(iOS8和之前注册方式不同，请注意判断)</li>
 </ol>
 <pre><code class="language-objc">    //推送注册
@@ -221,7 +221,7 @@
         
           <div class="next-post">
             <div class="next">下一篇</div>
-            <a href="https://blog.xiaolei.kim/post/Lovkl2xsz">
+            <a href="https://blog.xiaolei.kim/post/Lovkl2xsz/">
               <h3 class="post-title">
                 Hexo 遇到的坑
               </h3>
