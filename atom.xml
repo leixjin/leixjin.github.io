@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>https://blog.xiaolei.kim</id>
+    <id>https://blog.leixjin.fun</id>
     <title>leixjin</title>
-    <updated>2020-02-25T06:50:16.656Z</updated>
+    <updated>2020-03-26T02:38:26.417Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
-    <link rel="alternate" href="https://blog.xiaolei.kim"/>
-    <link rel="self" href="https://blog.xiaolei.kim/atom.xml"/>
+    <link rel="alternate" href="https://blog.leixjin.fun"/>
+    <link rel="self" href="https://blog.leixjin.fun/atom.xml"/>
     <subtitle>Think different.</subtitle>
-    <logo>https://blog.xiaolei.kim/images/avatar.png</logo>
-    <icon>https://blog.xiaolei.kim/favicon.ico</icon>
+    <logo>https://blog.leixjin.fun/images/avatar.png</logo>
+    <icon>https://blog.leixjin.fun/favicon.ico</icon>
     <rights>All rights reserved 2020, leixjin</rights>
     <entry>
         <title type="html"><![CDATA[清除 Mac DNS 缓存]]></title>
-        <id>https://blog.xiaolei.kim/post/pmyP_Znk7/</id>
-        <link href="https://blog.xiaolei.kim/post/pmyP_Znk7/">
+        <id>https://blog.leixjin.fun/post/pmyP_Znk7/</id>
+        <link href="https://blog.leixjin.fun/post/pmyP_Znk7/">
         </link>
         <updated>2019-01-13T06:39:55.000Z</updated>
         <content type="html"><![CDATA[<pre><code class="language-shell">sudo killall -HUP mDNSResponder
@@ -24,8 +24,8 @@ sudo dscacheutil -flushcache
     </entry>
     <entry>
         <title type="html"><![CDATA[为基于 Docker 搭建的 Ghost 配置邮件服务]]></title>
-        <id>https://blog.xiaolei.kim/post/WOmXokNwB/</id>
-        <link href="https://blog.xiaolei.kim/post/WOmXokNwB/">
+        <id>https://blog.leixjin.fun/post/WOmXokNwB/</id>
+        <link href="https://blog.leixjin.fun/post/WOmXokNwB/">
         </link>
         <updated>2018-07-25T06:39:27.000Z</updated>
         <content type="html"><![CDATA[<p>最近想配置一个 Ghost 的多账户，在点完邀请链接之后没有任何效果。遂猜想是不是因为需要配置发件服务器的原因，查了一下果然是需要单独配置才能发送邀请邮件。于是便开始折腾。</p>
@@ -64,8 +64,8 @@ sudo dscacheutil -flushcache
     </entry>
     <entry>
         <title type="html"><![CDATA[iOS Hook 全局方法先导篇之 - Fishhook 原理解析]]></title>
-        <id>https://blog.xiaolei.kim/post/Z7K5MaNXJ/</id>
-        <link href="https://blog.xiaolei.kim/post/Z7K5MaNXJ/">
+        <id>https://blog.leixjin.fun/post/Z7K5MaNXJ/</id>
+        <link href="https://blog.leixjin.fun/post/Z7K5MaNXJ/">
         </link>
         <updated>2018-07-20T06:38:58.000Z</updated>
         <content type="html"><![CDATA[<h2 id="什么是-fishhook">什么是 Fishhook</h2>
@@ -376,8 +376,8 @@ struct nlist_64 {
     </entry>
     <entry>
         <title type="html"><![CDATA[Docker 搭建 FTP 服务器]]></title>
-        <id>https://blog.xiaolei.kim/post/PXIlyVOKm/</id>
-        <link href="https://blog.xiaolei.kim/post/PXIlyVOKm/">
+        <id>https://blog.leixjin.fun/post/PXIlyVOKm/</id>
+        <link href="https://blog.leixjin.fun/post/PXIlyVOKm/">
         </link>
         <updated>2018-04-26T06:37:57.000Z</updated>
         <content type="html"><![CDATA[<p><img src="https://images.unsplash.com/photo-1524507390346-633e7cabc14b?ixlib=rb-0.3.5&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=1080&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjExNzczfQ&amp;s=1f55f3e32fce4af14eed0cc1799d5b96" alt="" loading="lazy"><br>
@@ -400,8 +400,8 @@ struct nlist_64 {
     </entry>
     <entry>
         <title type="html"><![CDATA[NSLinkAttributeName 属性对应的文字颜色设置]]></title>
-        <id>https://blog.xiaolei.kim/post/wsk2IIkTb/</id>
-        <link href="https://blog.xiaolei.kim/post/wsk2IIkTb/">
+        <id>https://blog.leixjin.fun/post/wsk2IIkTb/</id>
+        <link href="https://blog.leixjin.fun/post/wsk2IIkTb/">
         </link>
         <updated>2018-04-18T06:37:03.000Z</updated>
         <content type="html"><![CDATA[<p>今天写了一个 UITextView，里面赋值了一个 NSAttributedString，其中设置了一个 NSLinkAttributeName 的属性，也就是给一段文字设置了一个超链接。设置完之后，发现这个链接的颜色又变成了系统的丑蓝色。mmp...UIKit 怎么这么热衷于丑蓝呢？然后我就随手设置了一个 NSForegroundColorAttributeName，编译之后，卧槽？不生效？然后又尝试了各种给 NSAttributedString 设置颜色的属性，皆未果。顿时我就方了，这还有坑？</p>
@@ -413,8 +413,8 @@ struct nlist_64 {
     </entry>
     <entry>
         <title type="html"><![CDATA[iOS UIBarButtonItem 的图片颜色问题]]></title>
-        <id>https://blog.xiaolei.kim/post/UzPGc9oag/</id>
-        <link href="https://blog.xiaolei.kim/post/UzPGc9oag/">
+        <id>https://blog.leixjin.fun/post/UzPGc9oag/</id>
+        <link href="https://blog.leixjin.fun/post/UzPGc9oag/">
         </link>
         <updated>2018-04-17T06:36:41.000Z</updated>
         <content type="html"><![CDATA[<p><img src="https://images.unsplash.com/photo-1523823404920-c5aa35025e89?ixlib=rb-0.3.5&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=1080&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjExNzczfQ&amp;s=a28ab2398ce1263c5f9afffe3ab46a47" alt="" loading="lazy"><br>
@@ -457,8 +457,8 @@ struct nlist_64 {
     </entry>
     <entry>
         <title type="html"><![CDATA[清除 Chrome 的 DNS Cache]]></title>
-        <id>https://blog.xiaolei.kim/post/E2PlwEanR/</id>
-        <link href="https://blog.xiaolei.kim/post/E2PlwEanR/">
+        <id>https://blog.leixjin.fun/post/E2PlwEanR/</id>
+        <link href="https://blog.leixjin.fun/post/E2PlwEanR/">
         </link>
         <updated>2018-04-17T06:36:17.000Z</updated>
         <content type="html"><![CDATA[<p>在 Chrome 地址栏输入： <a href="chrome://net-internals">chrome://net-internals</a></p>
@@ -468,8 +468,8 @@ struct nlist_64 {
     </entry>
     <entry>
         <title type="html"><![CDATA[狗血的中国移动]]></title>
-        <id>https://blog.xiaolei.kim/post/q9N6d08yg/</id>
-        <link href="https://blog.xiaolei.kim/post/q9N6d08yg/">
+        <id>https://blog.leixjin.fun/post/q9N6d08yg/</id>
+        <link href="https://blog.leixjin.fun/post/q9N6d08yg/">
         </link>
         <updated>2018-04-16T06:35:50.000Z</updated>
         <content type="html"><![CDATA[<h2 id="浪费我时间-消耗我钱财封我-vultr-的-443-端口">浪费我时间！ 消耗我钱财！！封我 Vultr 的 443 端口！！！</h2>
@@ -484,8 +484,8 @@ struct nlist_64 {
     </entry>
     <entry>
         <title type="html"><![CDATA[博客搬新家啦]]></title>
-        <id>https://blog.xiaolei.kim/post/twREhBZ4L/</id>
-        <link href="https://blog.xiaolei.kim/post/twREhBZ4L/">
+        <id>https://blog.leixjin.fun/post/twREhBZ4L/</id>
+        <link href="https://blog.leixjin.fun/post/twREhBZ4L/">
         </link>
         <updated>2018-04-05T06:35:19.000Z</updated>
         <content type="html"><![CDATA[<p>最近发现 Docker 非常的方便，又凑巧换了个域名，就折腾了一下，把我的博客从 Blogger 迁移到了 WordPress，用了几天之后发现不是特别的满意，昨天晚上从床上爬起来，研究了一下 Ghost。发现它比 WordPress 更符合我的预期，折腾了几个小时，总算是把博客给折腾好了。</p>
@@ -500,8 +500,8 @@ struct nlist_64 {
     </entry>
     <entry>
         <title type="html"><![CDATA[Xcode 9 正式版模拟器卡顿]]></title>
-        <id>https://blog.xiaolei.kim/post/XynFtnT68/</id>
-        <link href="https://blog.xiaolei.kim/post/XynFtnT68/">
+        <id>https://blog.leixjin.fun/post/XynFtnT68/</id>
+        <link href="https://blog.leixjin.fun/post/XynFtnT68/">
         </link>
         <updated>2017-10-16T06:34:48.000Z</updated>
         <content type="html"><![CDATA[<p>升级到 Xcode 9 之后，用模拟器打开地图应用，发现图区的渲染简直卡到爆了，刚开始一度怀疑是不是自己的电脑出了什么问题，就用真机跑了跑，发现真机并没有什么问题。就在 Google 上搜了一下，发现这个问题是 Xcode 9 的 bug，导致此 bug 的原因是 模拟器中的 OpenGL 库里的一个依赖占用 CPU 过高。然后我废了九牛二虎之力找到了旧版本 Beta 版模拟器中相应的库进行了替换，问题得到解决。</p>
