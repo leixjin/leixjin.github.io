@@ -1,5 +1,14 @@
 {
   "appclips": {
     "apps": ["5HDB88S5U2.com.leixjin.ClipAppDemo.Clip"]
-  }
+  },
+   "applinks": {
+        "apps": [],
+        "details": [
+            {
+                "appID": "D5G53B2K3T.com.okex.OKExAppstoreFull",
+                "paths": [ "*"]
+            }
+        ]
+    }
 }
