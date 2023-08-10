@@ -1,33 +1,80 @@
 <html>
-    <title>哈哈哈</title>
-    <script>
-        console.log("哈哈哈");
-        async function xxxx(params) {
-            try {
+<script>
+    // async function onConnect() {
+    //     await window.tronLink.request({
+    //         method: "tron_requestAccounts",
+    //     });
+    // }
+    // async function getAddress() {
+    //     console.log(tronWeb.defaultAddress.base58);
+    // }
+    // async function onTx() {
+    //     const tronWeb = window.tronLink.tronWeb;
+    //     const transaction = await tronWeb.transactionBuilder.sendTrx(
+    //         "TMDKznuDWaZwfZHcM61FVFstyYNmK6Njk1",
+    //         tronWeb.toSun(0.001),
+    //         tronWeb.defaultAddress.base58
+    //     );
+
+    //     console.log(transaction);
+    //     console.log(JSON.stringify(transaction));
+
+    //     const signedTransaction = await tronWeb.trx.sign(transaction);
+    //     console.log('signedTransaction:');
+    //     console.log(signedTransaction);
+    //     console.log(JSON.stringify(signedTransaction));
+    // }
+    async function onRequestAccount(params) {
+        try {
             const newAccounts = await ethereum.request({
                 method: 'eth_requestAccounts',
             });
-                console.log(newAccounts);
-            } catch (error) {
-                console.error(error);
-            }   
+            console.log(newAccounts);
+        } catch (error) {
+            console.error(error);
         }
-        async function approve(params) {
-            window.ethereum.request({
-                "method": "eth_sendTransaction",
-                "params": [
-                    {
-                    "to": "0x8f8526dbfd6e38e3d8307702ca8469bae6c56c15",
+    }
+    async function onApprove(params) {
+        window.ethereum.request({
+            "method": "eth_sendTransaction",
+            "params": [
+                {
+                    "to": "0x9bc5baf874d2da8d216ae9f137804184ee5afef4",
                     "from": "0x05d132975D8EfCD67262980C54f9030319C91Af0",
                     "gas": "0x12312",
                     "value": "0x0",
                     "gasPrice": "0x12312",
                     "data": "0x095ea7b3000000000000000000000000c3364a27f56b95f4beb0742a7325d67a04d80942000000000000000000000000000000000000000000000000000000004190ab00"
-                    }
-                ]
-                })
-        }
-        xxxx()
-        approve()
-    </script>
+                }
+            ]
+        })
+    }
+    async function onSendTransaction(params) {
+        window.ethereum.request({
+            "method": "eth_sendTransaction",
+            "params": [
+                {
+                    "to": "0x05d132975D8EfCD67262980C54f9030319C91Af0",
+                    "from": "0x05d132975D8EfCD67262980C54f9030319C91Af0",
+                    "gas": "0x12312",
+                    "value": "0x0",
+                    "gasPrice": "0x12312"
+                }
+            ]
+        })
+    }
+</script>
+
+<body>
+    <h1>DApp Test</h1>
+    <button type="submit" id="btn_connect" onclick="onRequestAccount()">
+        connect
+    </button>
+    <button type="submit" id="btn_tx" onclick="onApprove()">approve</button>
+    <button type="submit" id="btn_tx" onclick="onSendTransaction()">sendTransaction</button>
+    <!-- <button type="submit" id="btn_address" onclick="getAddress()">
+        address
+    </button> -->
+</body>
+
 </html>
