@@ -1,0 +1,37 @@
+<html>
+<script>
+    async function onRequestAccount() {
+        await window.tronLink.request({
+            method: "tron_requestAccounts",
+        });
+    }
+    async function onGetAddress() {
+        console.log(tronWeb.defaultAddress.base58);
+    }
+    async function onSendTransaction() {
+        const tronWeb = window.tronLink.tronWeb;
+        const transaction = await tronWeb.transactionBuilder.sendTrx(
+            "TMDKznuDWaZwfZHcM61FVFstyYNmK6Njk1",
+            tronWeb.toSun(0.001),
+            tronWeb.defaultAddress.base58
+        );
+
+        console.log(transaction);
+        console.log(JSON.stringify(transaction));
+        const signedTransaction = await tronWeb.trx.sign(transaction);
+        console.log('signedTransaction:');
+        console.log(signedTransaction);
+        console.log(JSON.stringify(signedTransaction));
+    }
+</script>
+
+<body>
+    <h1>DApp Test</h1>
+    <button type="submit" id="btn_connect" onclick="onRequestAccount()">
+        connect
+    </button>
+    <button type="submit" id="btn_tx" onclick="onGetAddress()">getAddress</button>
+    <button type="submit" id="btn_tx" onclick="onSendTransaction()">sendTransaction</button>
+</body>
+
+</html>
