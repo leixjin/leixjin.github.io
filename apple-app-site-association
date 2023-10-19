@@ -10,5 +10,8 @@
                 "paths": [ "*"]
             }
         ]
+    },
+   "webcredentials": {
+       "apps": [    "D5G53B2K3T.com.example.apple-samplecode.ShinyD5G53B2K3T" ]
     }
 }
