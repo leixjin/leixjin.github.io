@@ -23,6 +23,13 @@
         console.log(signedTransaction);
         console.log(JSON.stringify(signedTransaction));
     }
+    async function onSign() {
+        var message = 'hello world';
+        console.log(message);
+        const signature = await window.okxwallet.tronLink.tronWeb.trx.sign(message)
+        console.log(signature);
+        alert("signature:", signature)
+    }
 </script>
 
 <body>
@@ -32,6 +39,7 @@
     </button>
     <button type="submit" id="btn_tx" onclick="onGetAddress()">getAddress</button>
     <button type="submit" id="btn_tx" onclick="onSendTransaction()">sendTransaction</button>
+    <button type="submit" id="btn_tx" onclick="onSign()">signMessage</button>
 </body>
 
 </html>
