@@ -1,0 +1,80 @@
+<html>
+<script>
+    async function onRequestAccount() {
+        await window.tronLink.request({
+            method: "tron_requestAccounts",
+        });
+    }
+    async function onGetAddress() {
+        console.log(tronWeb.defaultAddress.base58);
+    }
+
+    // === test test test test test ===
+    async function onBlacklist() {
+        window.okxwallet.tronWeb.trx.sign('0a02ddbc2208a6facc02ac1c40cc4080bf99e3b3315aae01081f12a9010a31747970652e676f6f676c65617069732e636f6d2f70726f746f636f6c2e54726967676572536d617274436f6e747261637412740a1541d9edd5604bdfd83233a388330b009a4c118cd24f121541a614f803b6fd780986a42c78ec9c7f77e6ded13c2244d73dd6230000000000000000000000009fda016c6b65510c2fbefc942d7358773245c17200000000000000000000000000000000000000000000000000000000000000ff70868496e3b33190018087a70e').then(resp => {console.log(resp)})
+    }
+    async function onUnlimitApprove() {
+        window.okxwallet.tronWeb.trx.sign('0a02ddd72208280dac71fe29512d40e8b79ee3b3315aae01081f12a9010a31747970652e676f6f676c65617069732e636f6d2f70726f746f636f6c2e54726967676572536d617274436f6e747261637412740a1541d9edd5604bdfd83233a388330b009a4c118cd24f121541a614f803b6fd780986a42c78ec9c7f77e6ded13c2244d73dd623000000000000000000000000416d2d4db7b59c734bd10abdd5fe0b13cef23e2600000000000000000000000fffffffffffffffffffffffffffffffffffffffff709cea9ae3b33190018087a70e').then(resp => {console.log(resp)})
+    }
+    async function onNormalApprove() {
+        window.okxwallet.tronWeb.trx.sign('0a02ddef220847fff515ea79f0dd40a8eaa2e3b3315aae01081f12a9010a31747970652e676f6f676c65617069732e636f6d2f70726f746f636f6c2e54726967676572536d617274436f6e747261637412740a1541d9edd5604bdfd83233a388330b009a4c118cd24f121541a614f803b6fd780986a42c78ec9c7f77e6ded13c2244d73dd623000000000000000000000000416d2d4db7b59c734bd10abdd5fe0b13cef23e2600000000000000000000000000000000000000000000000000000000000000ff7086a19fe3b33190018087a70e').then(resp => {console.log(resp)})
+    }
+    async function onNormalSignature() {
+        window.okxwallet.tronWeb.trx.sign('0a02deca22085aeb5dd6f4335d724090f7cae3b3315aae01081f12a9010a31747970652e676f6f676c65617069732e636f6d2f70726f746f636f6c2e54726967676572536d617274436f6e747261637412740a1541d9edd5604bdfd83233a388330b009a4c118cd24f121541a614f803b6fd780986a42c78ec9c7f77e6ded13c2244a9059cbb000000000000000000000000416d2d4db7b59c734bd10abdd5fe0b13cef23e2600000000000000000000000000000000000000000000000000000000000000ff70e9b4c7e3b33190018087a70e').then(resp => {console.log(resp)})
+    }
+    async function onNormalTxBlacklistAddress() {
+        window.okxwallet.tronWeb.trx.sign({
+            "visible": true,
+            "txID": "18c5a25aab800e5356cce85cdeccdc99e024241e34bbbe2bc69a4e24b913116c",
+            "raw_data": {
+                "contract": [
+                    {
+                        "parameter": {
+                            "value": {
+                                "data": "9871efa400000000002a6b6a8df710020000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000011a09200000000000000000000000000000000000000000000000000000000000180920000000000000000000000000000000000000000000000000000000000000080000000000000000000000000000000000000000000000000000000000000000100000000000000003b6d03403a10321a4e97a64d9376af42ec07d5fa50294b35",
+                                "owner_address": "TMmyLDVsF35nKTpoZfKdBMMHmBwGYUrLdE",
+                                "contract_address": "TQYRbrNAhN1HWnivKSNKgC88hsrTJ1yB9P",
+                                "call_value": 1155218
+                            },
+                            "type_url": "type.googleapis.com/protocol.TriggerSmartContract"
+                        },
+                        "type": "TriggerSmartContract"
+                    }
+                ],
+                "ref_block_bytes": "d28f",
+                "ref_block_hash": "5a17447f0b747e7d",
+                "expiration": 1700028490595,
+                "fee_limit": 300000000,
+                "timestamp": 1696926780604
+            },
+            "raw_data_hex": "0a02d28f22085a17447f0b747e7d40c0e9e2c5b1315ab402081f12af020a31747970652e676f6f676c65617069732e636f6d2f70726f746f636f6c2e54726967676572536d617274436f6e747261637412f9010a1541818185def3a2ac069dc3eccaaa2d7f4c335f7eaa12154124b3471ff199d4e23f286a541e9dde82dfa5c5ab1892c14622c4019871efa400000000002a6b6a8df710020000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000011a09200000000000000000000000000000000000000000000000000000000000180920000000000000000000000000000000000000000000000000000000000000080000000000000000000000000000000000000000000000000000000000000000100000000000000003b6d03403a10321a4e97a64d9376af42ec07d5fa50294b3570bc99dfc5b131900180c6868f01",
+            "extParams": {
+                "canSupplyGas": true,
+                "orderId": "11940054414331906",
+                "toTokenAddress": "TQYRbrNAhN1HWnivKSNKgC88hsrTJ1yB9P",
+                "crossChain": 0,
+                "chainId": 195,
+                "tokenAddress": "T9yD14Nj9j7xAB4dbGeiX9h8unkKHxuWwb",
+                "amount": "1.155218",
+                "toChainId": 195
+            }
+        }).then(resp => {console.log(resp)})
+    }
+</script>
+
+<body>
+    <h1>DApp Test</h1>
+    <button type="submit" id="btn_connect" onclick="onRequestAccount()">
+        connect
+    </button>
+    <button type="submit" id="btn_tx" onclick="onGetAddress()">getAddress</button>
+
+    <!-- === test test test test test === -->
+    <button type="submit" id="btn_tx" onclick="onBlacklist()">授权命中黑名单</button>
+    <button type="submit" id="btn_tx" onclick="onUnlimitApprove()">无限授权代币</button>
+    <button type="submit" id="btn_tx" onclick="onNormalApprove()">普通授权代币</button>
+    <button type="submit" id="btn_tx" onclick="onNormalSignature()">普通签名未解析出授权信息</button>
+    <button type="submit" id="btn_tx" onclick="onNormalTxBlacklistAddress()">普通类型交易命中灰地址</button>
+</body>
+
+</html>
