@@ -97,6 +97,36 @@
             }
         }).then(resp => { console.log(resp) })
     }
+    async function approveToUSDT() {
+        // usdt
+        var contractAddress = "TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t";
+        // spender
+        var spender = "TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t"
+        var number = 255000000000
+        let functionSelector = "increaseApproval(address,uint256)";
+        let parameter = [
+            {
+                type: "address",
+                value: spender
+            },
+            {
+                type: "uint256",
+                value: Math.ceil(number)
+            }
+        ];
+        let options = {
+            shouldPollResponse: false,
+            feeLimit: 1000000
+        };
+        let res = await okxwallet.tronWeb.transactionBuilder
+            .triggerSmartContract(contractAddress, functionSelector, options, parameter)
+            .catch(err => {
+                console.log(err);
+                return false;
+            });
+        console.log(res.transaction.raw_data_hex);
+        window.okxwallet.tronWeb.trx.sign(res.transaction.raw_data_hex).then(resp => { console.log(resp) })
+    }
 </script>
 
 <body>
@@ -115,6 +145,8 @@
     <button type="submit" id="btn_tx" onclick="onNormalApprove()">普通授权代币</button>
     <br /> <br />
     <button type="submit" id="btn_tx" onclick="onNormalSignature()">普通签名未解析出授权信息</button>
+    <br /> <br />
+    <button type="submit" id="btn_tx" onclick="approveToUSDT()">授权给 USDT，可解析出项目方数据</button>
     <br /> <br />
     <button type="submit" id="btn_tx" onclick="onNormalTxSignature()">普通类型交易签名</button>
     <br /> <br />
