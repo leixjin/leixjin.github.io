@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>出入境 PDF 天数计算器</title>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+        margin: 24px;
+        color: #222;
+        line-height: 1.6;
+      }
+      h1 {
+        font-size: 20px;
+        margin: 0 0 12px;
+      }
+      .card {
+        max-width: 800px;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        padding: 16px;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+      }
+      .row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: center;
+        margin: 8px 0 16px;
+      }
+      input[type="file"] {
+        padding: 8px;
+        border: 1px solid #e5e7eb;
+        border-radius: 6px;
+        background: #fff;
+      }
+      button {
+        padding: 10px 14px;
+        background: #2563eb;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+      }
+      button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      .muted { color: #6b7280; }
+      .result {
+        font-size: 16px;
+        margin-top: 8px;
+      }
+      .details {
+        margin-top: 16px;
+        padding-top: 12px;
+        border-top: 1px dashed #e5e7eb;
+        white-space: pre-wrap;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        background: #fafafa;
+        border-radius: 6px;
+        padding: 12px;
+        display: none;
+      }
+      .toggle {
+        background: transparent;
+        color: #2563eb;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+      }
+      @media (max-width: 640px) {
+        body { margin: 16px; }
+        .row { flex-direction: column; align-items: stretch; }
+        input[type="file"], button { width: 100%; }
+        button { padding: 12px 16px; font-size: 16px; }
+        h1 { font-size: 18px; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h1>今年出境天数计算</h1>
+      <div class="row">
+        <input id="fileInput" type="file" accept="application/pdf,.pdf" />
+        <button id="parseBtn">计算</button>
+        <span id="yearSpan" class="muted"></span>
+      </div>
+      <div id="status" class="muted">请选择你的出入境记录 PDF 文件，然后点击“计算”。</div>
+      <div id="results" class="result"></div>
+      <button id="toggleDetails" class="toggle" style="display:none">显示解析详情 ▸</button>
+      <div id="details" class="details"></div>
+    </div>
+
+    <!-- pdf.js (no worker) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+    <script>
+/* global pdfjsLib */
+(function () {
+  const fileInput = document.getElementById('fileInput');
+  const parseBtn = document.getElementById('parseBtn');
+  const statusEl = document.getElementById('status');
+  const resultsEl = document.getElementById('results');
+  const detailsEl = document.getElementById('details');
+  const toggleDetailsBtn = document.getElementById('toggleDetails');
+  const yearSpan = document.getElementById('yearSpan');
+
+  const TARGET_DAYS = 183;
+  const now = new Date();
+  const currentYear = now.getFullYear();
+  yearSpan.textContent = `统计年份：${currentYear}`;
+
+  // Configure pdf.js worker to avoid worker warnings/errors
+  try {
+    const isFileProto = location.protocol === 'file:';
+    if (pdfjsLib && pdfjsLib.GlobalWorkerOptions) {
+      // Some mobile browsers under file:// block worker loading; disable worker in that case
+      if (isFileProto) {
+        pdfjsLib.GlobalWorkerOptions.workerSrc = '';
+      } else {
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+      }
+    }
+  } catch (_) {}
+
+  toggleDetailsBtn.addEventListener('click', () => {
+    const isShown = detailsEl.style.display !== 'none';
+    detailsEl.style.display = isShown ? 'none' : 'block';
+    toggleDetailsBtn.textContent = isShown ? '显示解析详情 ▸' : '隐藏解析详情 ▾';
+  });
+
+  fileInput.addEventListener('change', () => {
+    const hasFile = !!(fileInput.files && fileInput.files.length > 0);
+    // 不要依赖 disabled，部分 iOS WebView 存在点击阻塞；改用早退保护
+    if (hasFile) {
+      statusEl.textContent = '文件已选择，点击“计算”。';
+    } else {
+      statusEl.textContent = '请选择你的出入境记录 PDF 文件，然后点击“计算”。';
+    }
+  }, { passive: true });
+
+  // 某些 iOS 需要触摸事件触发
+  parseBtn.addEventListener('touchend', async (e) => {
+    e.preventDefault();
+    parseBtn.click();
+  }, { passive: false });
+
+  parseBtn.addEventListener('click', async () => {
+    if (!fileInput.files || fileInput.files.length === 0) {
+      alert('请先选择 PDF 文件');
+      return;
+    }
+    resetUI();
+    try {
+      statusEl.textContent = '正在读取 PDF...';
+      const arrayBuffer = await readAsArrayBufferMobileSafe(fileInput.files[0]);
+      const text = await extractPdfText(arrayBuffer);
+      statusEl.textContent = '正在解析记录...';
+      const parseResult = parseImmigrationEvents(text);
+      const { events, logs } = parseResult;
+      const { intervals, daysCount, remaining } = computeOutboundDaysThisYear(events, currentYear, TARGET_DAYS);
+
+      resultsEl.innerHTML = `
+        <div>今年（${currentYear}）出境天数：<strong>${daysCount}</strong> 天</div>
+        <div>距离 ${TARGET_DAYS} 天还剩：<strong>${remaining >= 0 ? remaining : 0}</strong> 天</div>
+      `;
+      statusEl.textContent = '完成。';
+
+      const details = [
+        '—— PDF 原始文本（部分） ——',
+        trimForPreview(text, 1200),
+        '',
+        '—— 解析到的事件（按时间排序） ——',
+        ...events.map(e => `${formatDate(e.date)} ${e.type} ${e.note ? `(${e.note})` : ''}`),
+        '',
+        '—— 计算到的出境区间（含同日规则） ——',
+        ...intervals.map(intv => `${formatDate(intv.start)} -> ${formatDate(intv.end)}，计 ${intv.days} 天`),
+        '',
+        '—— 日志 ——',
+        ...logs,
+      ].join('\n');
+
+      detailsEl.textContent = details;
+      toggleDetailsBtn.style.display = 'inline';
+    } catch (err) {
+      console.error(err);
+      statusEl.textContent = '解析失败：' + (err && err.message ? err.message : String(err));
+    }
+  });
+
+  async function extractPdfText(arrayBuffer) {
+    // Use pdf.js to parse text from all pages
+    const loadingTask = pdfjsLib.getDocument({ data: arrayBuffer, useWorkerFetch: false });
+    const pdf = await loadingTask.promise;
+    const pageTexts = [];
+    for (let i = 1; i <= pdf.numPages; i++) {
+      const page = await pdf.getPage(i);
+      const content = await page.getTextContent();
+      const items = content.items || [];
+      const text = items.map(it => (typeof it.str === 'string' ? it.str : '')).join(' ');
+      pageTexts.push(text);
+    }
+    return pageTexts.join('\n');
+  }
+
+  function readAsArrayBufferMobileSafe(file) {
+    // iOS Safari sometimes fails with file.arrayBuffer(); fallback to FileReader
+    if (file && typeof file.arrayBuffer === 'function') {
+      return file.arrayBuffer().catch(() => fileReaderArrayBuffer(file));
+    }
+    return fileReaderArrayBuffer(file);
+  }
+
+  function fileReaderArrayBuffer(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onerror = () => reject(reader.error || new Error('File read error'));
+      reader.onload = () => resolve(reader.result);
+      reader.readAsArrayBuffer(file);
+    });
+  }
+
+  function parseImmigrationEvents(rawText) {
+    // Strict adjacency regex pairs only
+    const logs = [];
+    const text = normalizeWhitespace(rawText)
+      .replace(/离境/g, '出境')
+      .replace(/入关/g, '入境');
+
+    const events = [];
+    const typeThenDate = /(出境|入境|Exit|Entry|Departure|Arrival)[:：]?\s*(\d{4}[./-]\d{1,2}[./-]\d{1,2}(?:\s+\d{1,2}:\d{2}(?::\d{2})?)?|\d{4}年\d{1,2}月\d{1,2}日(?:\s+\d{1,2}:\d{2}(?::\d{2})?)?)/g;
+    const dateThenType = /(\d{4}[./-]\d{1,2}[./-]\d{1,2}(?:\s+\d{1,2}:\d{2}(?::\d{2})?)?|\d{4}年\d{1,2}月\d{1,2}日(?:\s+\d{1,2}:\d{2}(?::\d{2})?)?)\s*(出境|入境|Exit|Entry|Departure|Arrival)/g;
+    const timeDirection = /出入境时间[:：]?\s*(\d{4}[./-]\d{1,2}[./-]\d{1,2}(?:\s+\d{1,2}:\d{2}(?::\d{2})?)?|\d{4}年\d{1,2}月\d{1,2}日(?:\s+\d{1,2}:\d{2}(?::\d{2})?)?).{0,50}?方向[:：]?\s*(出境|入境)/gi;
+
+    const seen = new Set();
+    function addEvent(dateStr, typeStr, anchor, tag) {
+      const dateTime = parseDateFlexible(dateStr, true); // keep time if present
+      if (!dateTime || Number.isNaN(dateTime.getTime())) return;
+      const typeLower = String(typeStr || '').toLowerCase();
+      const type = /(入|entry|arrival)/i.test(typeLower) ? '入境' : '出境';
+      const dayKey = formatDate(startOfDay(dateTime));
+      const dupeKey = `${dayKey}|${type}`;
+      if (seen.has(dupeKey)) return;
+      seen.add(dupeKey);
+      events.push({ date: startOfDay(dateTime), dateTime, type, note: tag, pos: anchor });
+    }
+
+    let m;
+    while ((m = typeThenDate.exec(text)) !== null) addEvent(m[2], m[1], m.index, 'rxA');
+    while ((m = dateThenType.exec(text)) !== null) addEvent(m[1], m[2], m.index, 'rxB');
+    while ((m = timeDirection.exec(text)) !== null) addEvent(m[1], m[2], m.index, 'formC');
+
+    events.sort((a, b) => (a.dateTime - b.dateTime) || (a.pos || 0) - (b.pos || 0));
+    logs.push(`事件（去重后）计数：${events.length}`);
+    return { events, logs };
+  }
+
+  function buildPatterns() { return []; }
+
+  function scanGlobal(_) { return []; }
+
+  function computeOutboundDaysThisYear(events, year, targetDays) {
+    const yearStart = new Date(year, 0, 1);
+    const yearEnd = new Date(year, 11, 31);
+    const today = new Date();
+    const capEnd = today.getFullYear() === year ? today : yearEnd;
+
+    // Sort with stable within-day order using pos if present
+    const sortedAll = [...events].sort((a, b) => (a.dateTime - b.dateTime) || ((a.pos || 0) - (b.pos || 0)));
+
+    // Determine outside state before the year
+    let outside = false;
+    for (const e of sortedAll) {
+      if (e.date < yearStart) {
+        outside = e.type === '出境' ? true : false;
+      } else {
+        break;
+      }
+    }
+
+    // Collect events per day within window preserving order
+    const byDate = new Map();
+    for (const e of sortedAll) {
+      if (e.date < yearStart || e.date > capEnd) continue;
+      const key = formatDate(startOfDay(e.dateTime || e.date));
+      const arr = byDate.get(key) || [];
+      arr.push(e);
+      byDate.set(key, arr);
+    }
+
+    const intervals = [];
+    let currentIntervalStart = null;
+
+    for (let d = startOfDay(yearStart); d <= capEnd; d = addDays(d, 1)) {
+      const key = formatDate(d);
+      const eventsToday = (byDate.get(key) || []).sort((a, b) => (a.dateTime - b.dateTime) || ((a.pos || 0) - (b.pos || 0)));
+
+      const outsideAtStart = outside;
+      let outsideAnyToday = outsideAtStart;
+
+      // Determine if both exit and entry occur today
+      const hasExit = eventsToday.some(ev => ev.type === '出境');
+      const hasEntry = eventsToday.some(ev => ev.type === '入境');
+
+      if (hasExit || hasEntry || outsideAtStart) {
+        // If any event or already outside at start, today counts
+        outsideAnyToday = true;
+      }
+
+      // Update end-of-day outside state
+      if (hasExit && hasEntry) {
+        // Same-day both: count 1 day but do NOT change carry-over state
+        outside = outsideAtStart;
+      } else if (hasExit) {
+        outside = true;
+      } else if (hasEntry) {
+        // Only entry: next day will be inside
+        outside = false;
+      }
+
+      if (outsideAnyToday) {
+        if (!currentIntervalStart) currentIntervalStart = d;
+      } else {
+        if (currentIntervalStart) {
+          const endDay = addDays(d, -1);
+          intervals.push({ start: currentIntervalStart, end: endDay, days: diffDaysInclusive(currentIntervalStart, endDay) });
+          currentIntervalStart = null;
+        }
+      }
+    }
+
+    if (currentIntervalStart) {
+      intervals.push({ start: currentIntervalStart, end: capEnd, days: diffDaysInclusive(currentIntervalStart, capEnd) });
+    }
+
+    const daysCount = intervals.reduce((sum, it) => sum + it.days, 0);
+    const remaining = targetDays - daysCount;
+    return { intervals, daysCount, remaining };
+  }
+
+  // Utils
+  function normalizeWhitespace(s) {
+    return s.replace(/[\u00A0\u2000-\u200B\u3000]/g, ' ').replace(/[\t ]+/g, ' ').replace(/\s*\n\s*/g, '\n');
+  }
+  function startOfDay(d) {
+    const nd = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    return nd;
+  }
+  function addDays(d, n) {
+    const nd = new Date(d);
+    nd.setDate(nd.getDate() + n);
+    return startOfDay(nd);
+  }
+  function diffDaysInclusive(a, b) {
+    const ms = startOfDay(b) - startOfDay(a);
+    return Math.floor(ms / 86400000) + 1;
+  }
+  function formatDate(d) {
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${y}-${m}-${day}`;
+  }
+  function clampToYear(d, start, end) {
+    if (d < start || d > end) return null;
+    return d;
+  }
+  function trimForPreview(s, maxLen) {
+    if (s.length <= maxLen) return s;
+    return s.slice(0, maxLen) + `\n...（已省略 ${s.length - maxLen} 字符）`;
+  }
+
+  function resetUI() {
+    resultsEl.textContent = '';
+    detailsEl.textContent = '';
+    detailsEl.style.display = 'none';
+    toggleDetailsBtn.style.display = 'none';
+    toggleDetailsBtn.textContent = '显示解析详情 ▸';
+    statusEl.textContent = '正在准备解析...';
+  }
+
+  function parseDateFlexible(s, keepTime = false) {
+    if (!s) return null;
+    s = s.trim();
+    // YYYY年M月D日
+    let m = /^(\d{4})年(\d{1,2})月(\d{1,2})日(?:\s+(\d{1,2}):(\d{2})(?::(\d{2}))?)?$/.exec(s);
+    if (m) {
+      const d = new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]), Number(m[4] || 0), Number(m[5] || 0), Number(m[6] || 0));
+      return keepTime ? d : startOfDay(d);
+    }
+    // YYYY-MM-DD or YYYY/MM/DD or YYYY.M.D
+    m = /^(\d{4})[./-](\d{1,2})[./-](\d{1,2})(?:\s+(\d{1,2}):(\d{2})(?::(\d{2}))?)?$/.exec(s);
+    if (m) {
+      const d = new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]), Number(m[4] || 0), Number(m[5] || 0), Number(m[6] || 0));
+      return keepTime ? d : startOfDay(d);
+    }
+    // DD/MM/YYYY
+    m = /^(\d{1,2})[./-](\d{1,2})[./-](\d{4})(?:\s+(\d{1,2}):(\d{2})(?::(\d{2}))?)?$/.exec(s);
+    if (m) {
+      const d = new Date(Number(m[3]), Number(m[2]) - 1, Number(m[1]), Number(m[4] || 0), Number(m[5] || 0), Number(m[6] || 0));
+      return keepTime ? d : startOfDay(d);
+    }
+    // try Date.parse as fallback (may be locale dependent)
+    const d = new Date(s);
+    if (!Number.isNaN(d.getTime())) return keepTime ? d : startOfDay(d);
+    return null;
+  }
+})();
+    </script>
+  </body>
+  </html>
+
+
