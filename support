@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>H.265 Previewer - Support</title>
+</head>
+<body>
+    <h1>H.265 Previewer Support</h1>
+    
+    <h2>Contact Information</h2>
+    <p>Email:  mi.guang@foxmail.com</p>
+    
+    <h2>How to Get Help</h2>
+    <p>If you need assistance with our app, please email us with:</p>
+    <ul>
+        <li>Your device model and iOS version</li>
+        <li>Your video content existing codec type</li>
+        <li>How to reproduce the issue</li>
+    </ul>
+    
+    <h2>App Version</h2>
+    <p>Current version: 1.0</p>
+</body>
+</html>
